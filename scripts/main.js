@@ -17,16 +17,15 @@ document.addEventListener('DOMContentLoaded', async () => {
         const opacity = await StorageManager.getPref('bg_opacity', '0.3');
         bg.setVisualSettings({ blur, opacity });
 
-        // Load default background (we can update this later with APIs or user uploads)
-        // For MVP, we'll fetch an image from an API or use a data URL color.
-        // Let's use a nice Unsplash placeholder as the default API fetch.
+        // Load default background (Parallelize)
         const defaultImage = 'https://images.unsplash.com/photo-1506744626753-1fa28f67c9bf?auto=format&fit=crop&w=1920&q=80';
         
-        await bg.setBackground({ type: 'image', src: defaultImage });
-        bg.enableParallax();
-        console.log('Background initialized with parallax');
+        bg.setBackground({ type: 'image', src: defaultImage }).then(() => {
+            bg.enableParallax();
+            console.log('Background initialized with parallax');
+        });
 
-        // Initialize Core UI Components
+        // Initialize Core UI Components (Immediately)
         const mainContent = app.querySelector('.main-content');
         if (mainContent) {
             import('./components/clock.js').then(({ Clock }) => new Clock(mainContent));
@@ -35,16 +34,18 @@ document.addEventListener('DOMContentLoaded', async () => {
             console.log('Core UI Components initialized');
         }
 
-        // Initialize Settings Panel (Customization Engine)
-        // Initialize Widget System
-        const { WidgetManager } = await import('./widgets/widget-manager.js');
-        const widgetArea = app.querySelector('.widget-area');
-        const widgetManager = new WidgetManager(widgetArea);
-        await widgetManager.init();
-        console.log('Widget system initialized');
+        // Initialize Settings & Widgets (Immediately)
+        const initSystems = async () => {
+            const { WidgetManager } = await import('./widgets/widget-manager.js');
+            const widgetArea = app.querySelector('.widget-area');
+            const widgetManager = new WidgetManager(widgetArea);
+            await widgetManager.init();
+            
+            const { Settings } = await import('./components/settings.js');
+            new Settings(app, widgetManager);
+            console.log('Systems initialized');
+        };
 
-        // Pass widgetManager to settings so it can show widget toggles
-        import('./components/settings.js').then(({ Settings }) => new Settings(app, widgetManager));
-        console.log('Settings panel initialized');
+        initSystems();
     }
 });

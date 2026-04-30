@@ -79,24 +79,50 @@ export class Background {
         document.documentElement.style.setProperty('--overlay-opacity', opacity);
     }
 
-    enableParallax(intensity = 15) {
+    enableParallax(intensity = 15, smoothing = 0.08) {
         // Respect reduced motion preference
         const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
         if (prefersReducedMotion) return;
 
-        document.addEventListener('mousemove', (e) => {
-            if (!this.currentMediaElement) return;
+        this.mouse = { x: 0, y: 0 };
+        this.currentPos = { x: 0, y: 0 };
+        this.parallaxActive = true;
 
-            const xPercent = (e.clientX / window.innerWidth - 0.5) * 2; // -1 to 1
-            const yPercent = (e.clientY / window.innerHeight - 0.5) * 2; // -1 to 1
+        const handleMouseMove = (e) => {
+            // Target coordinates (-1 to 1)
+            this.mouse.x = (e.clientX / window.innerWidth - 0.5) * 2;
+            this.mouse.y = (e.clientY / window.innerHeight - 0.5) * 2;
+        };
 
-            const translateX = xPercent * intensity * -1;
-            const translateY = yPercent * intensity * -1;
+        const update = () => {
+            if (!this.parallaxActive) return;
+            if (!this.currentMediaElement) {
+                requestAnimationFrame(update);
+                return;
+            }
+
+            // Lerp: current = current + (target - current) * smoothing
+            this.currentPos.x += (this.mouse.x - this.currentPos.x) * smoothing;
+            this.currentPos.y += (this.mouse.y - this.currentPos.y) * smoothing;
+
+            const translateX = this.currentPos.x * intensity * -1;
+            const translateY = this.currentPos.y * intensity * -1;
 
             this.currentMediaElement.style.transform = `translate(${translateX}px, ${translateY}px) scale(1.05)`;
-        });
+            
+            requestAnimationFrame(update);
+        };
 
-        // Scale up slightly so parallax movement doesn't reveal edges
+        document.addEventListener('mousemove', handleMouseMove);
+        requestAnimationFrame(update);
+
+        // Cleanup method if needed
+        this._stopParallax = () => {
+            this.parallaxActive = false;
+            document.removeEventListener('mousemove', handleMouseMove);
+        };
+
+        // Initial scale
         if (this.currentMediaElement) {
             this.currentMediaElement.style.transform = 'scale(1.05)';
         }
