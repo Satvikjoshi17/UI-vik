@@ -1,0 +1,12 @@
+{
+  "manifest_version": 3,
+  "name": "UI-vik(visual-increment-kit)",
+  "version": "1.0.0",
+  "description": "A visually rich, highly customizable new tab page with smooth performance.",
+  "chrome_url_overrides": {
+    "newtab": "index.html"
+  },
+  "permissions": [
+    "storage"
+  ]
+}

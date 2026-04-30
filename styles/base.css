@@ -1,0 +1,15 @@
+/* base.css - CSS Reset and foundational styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html, body, #app {
+    height: 100%;
+    width: 100%;
+    /* Start with a simple background for visibility */
+    background-color: #121212; 
+    color: #ffffff;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+}
