@@ -1,0 +1,52 @@
+/* background.css - Visual foundation for background elements */
+
+/* Variables that will be updated dynamically via JS */
+:root {
+    --blur-intensity: 0px;
+    --overlay-opacity: 0.2;
+}
+
+.bg-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    z-index: -2;
+    background-color: #121212; /* Default fallback */
+}
+
+.bg-media {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    z-index: -2;
+    opacity: 1;
+    transition: opacity 0.5s ease-in-out;
+}
+
+.bg-media.fade-out {
+    opacity: 0;
+}
+
+.bg-media.fade-in {
+    opacity: 1;
+}
+
+.bg-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+    backdrop-filter: blur(var(--blur-intensity));
+    -webkit-backdrop-filter: blur(var(--blur-intensity));
+    background-color: rgba(0, 0, 0, var(--overlay-opacity));
+    transition: backdrop-filter 0.3s ease, background-color 0.3s ease, -webkit-backdrop-filter 0.3s ease;
+    pointer-events: none; /* Let clicks pass through to background if needed */
+}
