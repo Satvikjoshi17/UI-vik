@@ -33,5 +33,9 @@ document.addEventListener('DOMContentLoaded', async () => {
             import('./components/quicklinks.js').then(({ QuickLinks }) => new QuickLinks(mainContent));
             console.log('Core UI Components initialized');
         }
+
+        // Initialize Settings Panel (Customization Engine)
+        import('./components/settings.js').then(({ Settings }) => new Settings(app));
+        console.log('Settings panel initialized');
     }
 });

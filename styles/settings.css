@@ -1,0 +1,306 @@
+/* settings.css - Sliding Sidebar Settings Panel */
+
+/* Gear Button */
+.settings-trigger {
+    position: fixed;
+    bottom: 2rem;
+    right: 2rem;
+    z-index: 100;
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    border: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    transition: transform 0.3s ease, background 0.3s ease, box-shadow 0.3s ease;
+    background: rgba(255, 255, 255, 0.15);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    color: white;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+.settings-trigger:hover {
+    transform: rotate(90deg) scale(1.1);
+    background: rgba(255, 255, 255, 0.25);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+}
+
+/* Sidebar Panel */
+.settings-panel {
+    position: fixed;
+    top: 0;
+    right: -380px;
+    width: 360px;
+    height: 100vh;
+    z-index: 200;
+    padding: 2rem;
+    overflow-y: auto;
+    transition: right 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.settings-panel.open {
+    right: 0;
+}
+
+/* Backdrop overlay */
+.settings-backdrop {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.4);
+    z-index: 150;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+}
+
+.settings-backdrop.active {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+/* Panel Header */
+.settings-panel__header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 2rem;
+}
+
+.settings-panel__title {
+    font-size: 1.5rem;
+    font-weight: 700;
+    letter-spacing: -0.5px;
+}
+
+.settings-panel__close {
+    background: none;
+    border: none;
+    color: inherit;
+    font-size: 1.5rem;
+    cursor: pointer;
+    padding: 0.25rem;
+    opacity: 0.7;
+    transition: opacity 0.2s ease;
+}
+
+.settings-panel__close:hover {
+    opacity: 1;
+}
+
+/* Section Group */
+.settings-section {
+    margin-bottom: 2rem;
+}
+
+.settings-section__title {
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    opacity: 0.6;
+    margin-bottom: 1rem;
+    font-weight: 600;
+}
+
+/* Toggle Switch */
+.toggle-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.75rem 0;
+}
+
+.toggle-row__label {
+    font-size: 1rem;
+    font-weight: 500;
+}
+
+.toggle-switch {
+    position: relative;
+    width: 48px;
+    height: 26px;
+    cursor: pointer;
+}
+
+.toggle-switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.toggle-switch__slider {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 26px;
+    transition: background 0.3s ease;
+}
+
+.toggle-switch__slider::before {
+    content: '';
+    position: absolute;
+    height: 20px;
+    width: 20px;
+    left: 3px;
+    bottom: 3px;
+    background: white;
+    border-radius: 50%;
+    transition: transform 0.3s ease;
+}
+
+.toggle-switch input:checked + .toggle-switch__slider {
+    background: #6c63ff;
+}
+
+.toggle-switch input:checked + .toggle-switch__slider::before {
+    transform: translateX(22px);
+}
+
+/* Layout Template Selector */
+.layout-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.75rem;
+}
+
+.layout-option {
+    padding: 1rem;
+    border-radius: 12px;
+    border: 2px solid rgba(255, 255, 255, 0.15);
+    cursor: pointer;
+    text-align: center;
+    font-size: 0.85rem;
+    font-weight: 500;
+    transition: border-color 0.2s ease, background 0.2s ease;
+    background: rgba(255, 255, 255, 0.05);
+}
+
+.layout-option:hover {
+    background: rgba(255, 255, 255, 0.1);
+}
+
+.layout-option.active {
+    border-color: #6c63ff;
+    background: rgba(108, 99, 255, 0.15);
+}
+
+.layout-option__icon {
+    font-size: 1.5rem;
+    margin-bottom: 0.5rem;
+}
+
+/* Theme Toggle Buttons */
+.theme-row {
+    display: flex;
+    gap: 0.75rem;
+}
+
+.theme-btn {
+    flex: 1;
+    padding: 0.75rem;
+    border-radius: 12px;
+    border: 2px solid rgba(255, 255, 255, 0.15);
+    cursor: pointer;
+    font-size: 0.9rem;
+    font-weight: 500;
+    text-align: center;
+    transition: border-color 0.2s ease, background 0.2s ease;
+    color: inherit;
+    background: rgba(255, 255, 255, 0.05);
+}
+
+.theme-btn:hover {
+    background: rgba(255, 255, 255, 0.1);
+}
+
+.theme-btn.active {
+    border-color: #6c63ff;
+    background: rgba(108, 99, 255, 0.15);
+}
+
+/* ------------ THEME SYSTEM ------------ */
+
+/* Dark theme (default) - Glassmorphism panels */
+[data-theme="dark"] .search-input,
+[data-theme="dark"] .quicklink-item,
+[data-theme="dark"] .settings-panel {
+    background: rgba(20, 20, 30, 0.65);
+    color: #ffffff;
+}
+
+[data-theme="dark"] .search-autocomplete {
+    background: rgba(20, 20, 30, 0.85);
+    color: #ffffff;
+}
+
+/* Light theme - Glassmorphism panels */
+[data-theme="light"] .search-input,
+[data-theme="light"] .quicklink-item,
+[data-theme="light"] .settings-panel {
+    background: rgba(255, 255, 255, 0.55);
+    color: #1a1a2e;
+}
+
+[data-theme="light"] .search-autocomplete {
+    background: rgba(255, 255, 255, 0.85);
+    color: #1a1a2e;
+}
+
+[data-theme="light"] .search-input::placeholder {
+    color: rgba(26, 26, 46, 0.5);
+}
+
+[data-theme="light"] .settings-panel__close,
+[data-theme="light"] .settings-trigger {
+    color: #1a1a2e;
+}
+
+[data-theme="light"] .clock-widget {
+    text-shadow: 0 4px 12px rgba(255, 255, 255, 0.3);
+    color: #1a1a2e;
+}
+
+[data-theme="light"] .quicklink-title {
+    color: #1a1a2e;
+}
+
+[data-theme="light"] .suggestion-item:hover,
+[data-theme="light"] .suggestion-item.selected {
+    background: rgba(0, 0, 0, 0.1);
+}
+
+/* ------------ LAYOUT TEMPLATES ------------ */
+
+/* Centered Focus (default) */
+.main-content.layout-centered {
+    justify-content: center;
+    align-items: center;
+}
+
+/* Top Heavy */
+.main-content.layout-top {
+    justify-content: flex-start;
+    padding-top: 8vh;
+}
+
+/* Bottom Dock */
+.main-content.layout-bottom {
+    justify-content: flex-end;
+    padding-bottom: 8vh;
+}
+
+/* Spread */
+.main-content.layout-spread {
+    justify-content: space-between;
+    padding-top: 8vh;
+    padding-bottom: 8vh;
+}
