@@ -78,4 +78,27 @@ export class Background {
         document.documentElement.style.setProperty('--blur-intensity', blur);
         document.documentElement.style.setProperty('--overlay-opacity', opacity);
     }
+
+    enableParallax(intensity = 15) {
+        // Respect reduced motion preference
+        const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        if (prefersReducedMotion) return;
+
+        document.addEventListener('mousemove', (e) => {
+            if (!this.currentMediaElement) return;
+
+            const xPercent = (e.clientX / window.innerWidth - 0.5) * 2; // -1 to 1
+            const yPercent = (e.clientY / window.innerHeight - 0.5) * 2; // -1 to 1
+
+            const translateX = xPercent * intensity * -1;
+            const translateY = yPercent * intensity * -1;
+
+            this.currentMediaElement.style.transform = `translate(${translateX}px, ${translateY}px) scale(1.05)`;
+        });
+
+        // Scale up slightly so parallax movement doesn't reveal edges
+        if (this.currentMediaElement) {
+            this.currentMediaElement.style.transform = 'scale(1.05)';
+        }
+    }
 }

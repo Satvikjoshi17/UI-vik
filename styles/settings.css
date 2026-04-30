@@ -304,3 +304,56 @@
     padding-top: 8vh;
     padding-bottom: 8vh;
 }
+
+/* ------------ SLIDER CONTROLS ------------ */
+
+.slider-row {
+    padding: 0.5rem 0;
+}
+
+.slider-row__label {
+    font-size: 0.95rem;
+    font-weight: 500;
+    display: block;
+    margin-bottom: 0.5rem;
+}
+
+.slider-row__control {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.range-slider {
+    flex: 1;
+    -webkit-appearance: none;
+    appearance: none;
+    height: 6px;
+    border-radius: 3px;
+    background: rgba(255, 255, 255, 0.2);
+    outline: none;
+    transition: background 0.2s ease;
+}
+
+.range-slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    background: #6c63ff;
+    cursor: pointer;
+    box-shadow: 0 2px 6px rgba(108, 99, 255, 0.4);
+    transition: transform 0.2s ease;
+}
+
+.range-slider::-webkit-slider-thumb:hover {
+    transform: scale(1.2);
+}
+
+.slider-row__value {
+    font-size: 0.85rem;
+    opacity: 0.7;
+    min-width: 40px;
+    text-align: right;
+}

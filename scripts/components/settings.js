@@ -7,6 +7,7 @@ export class Settings {
         this.componentVisibility = {};
         this.currentLayout = 'centered';
         this.currentTheme = 'dark';
+        this.blurIntensity = 5;
         this.init();
     }
 
@@ -19,6 +20,7 @@ export class Settings {
         });
         this.currentLayout = await StorageManager.getPref('layout', 'centered');
         this.currentTheme = await StorageManager.getPref('theme', 'dark');
+        this.blurIntensity = await StorageManager.getPref('bg_blur_val', 5);
 
         // Apply saved theme
         document.documentElement.setAttribute('data-theme', this.currentTheme);
@@ -84,6 +86,17 @@ export class Settings {
                     ${this.createLayoutOption('spread', '↕', 'Spread')}
                 </div>
             </div>
+
+            <div class="settings-section">
+                <div class="settings-section__title">Background</div>
+                <div class="slider-row">
+                    <span class="slider-row__label">Blur Intensity</span>
+                    <div class="slider-row__control">
+                        <input type="range" class="range-slider" id="blur-slider" min="0" max="30" value="${this.blurIntensity}">
+                        <span class="slider-row__value" id="blur-value">${this.blurIntensity}px</span>
+                    </div>
+                </div>
+            </div>
         `;
 
         document.body.appendChild(this.panel);
@@ -140,6 +153,20 @@ export class Settings {
         document.addEventListener('keydown', (e) => {
             if (e.key === 'Escape' && this.isOpen) this.close();
         });
+
+        // Blur slider
+        const blurSlider = this.panel.querySelector('#blur-slider');
+        const blurValue = this.panel.querySelector('#blur-value');
+        if (blurSlider) {
+            blurSlider.addEventListener('input', (e) => {
+                const val = e.target.value;
+                this.blurIntensity = parseInt(val);
+                blurValue.textContent = `${val}px`;
+                document.documentElement.style.setProperty('--blur-intensity', `${val}px`);
+                StorageManager.setPref('bg_blur', `${val}px`);
+                StorageManager.setPref('bg_blur_val', parseInt(val));
+            });
+        }
     }
 
     toggle() {

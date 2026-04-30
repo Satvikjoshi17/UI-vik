@@ -46,14 +46,14 @@
     width: 100%;
     padding: 1rem 1.5rem;
     font-size: 1.25rem;
-    border: none;
+    border: 1px solid rgba(255, 255, 255, 0.18);
     border-radius: 30px;
-    background: rgba(255, 255, 255, 0.2);
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
+    background: rgba(255, 255, 255, 0.12);
+    backdrop-filter: blur(12px) saturate(180%);
+    -webkit-backdrop-filter: blur(12px) saturate(180%);
     color: white;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-    transition: background 0.3s ease, box-shadow 0.3s ease;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.08), inset 0 1px 0 rgba(255,255,255,0.1);
+    transition: background 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease, transform 0.2s ease;
     outline: none;
 }
 
@@ -62,8 +62,9 @@
 }
 
 .search-input:focus {
-    background: rgba(255, 255, 255, 0.3);
-    box-shadow: 0 6px 20px rgba(0,0,0,0.2);
+    background: rgba(255, 255, 255, 0.2);
+    box-shadow: 0 8px 32px rgba(0,0,0,0.15), inset 0 1px 0 rgba(255,255,255,0.15);
+    border-color: rgba(255, 255, 255, 0.3);
 }
 
 .search-autocomplete {
@@ -71,14 +72,15 @@
     top: calc(100% + 10px);
     left: 0;
     width: 100%;
-    background: rgba(20, 20, 20, 0.85);
-    backdrop-filter: blur(15px);
-    -webkit-backdrop-filter: blur(15px);
+    background: rgba(20, 20, 30, 0.75);
+    backdrop-filter: blur(20px) saturate(180%);
+    -webkit-backdrop-filter: blur(20px) saturate(180%);
+    border: 1px solid rgba(255, 255, 255, 0.12);
     border-radius: 15px;
     overflow: hidden;
     display: none; /* Hidden by default */
     flex-direction: column;
-    box-shadow: 0 8px 30px rgba(0,0,0,0.3);
+    box-shadow: 0 8px 32px rgba(0,0,0,0.25);
 }
 
 .search-autocomplete.active {
@@ -114,16 +116,20 @@
     height: 90px;
     text-decoration: none;
     color: white;
-    background: rgba(255, 255, 255, 0.1);
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.18);
     border-radius: 15px;
-    transition: transform 0.2s ease, background 0.2s ease;
-    backdrop-filter: blur(5px);
-    -webkit-backdrop-filter: blur(5px);
+    transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), background 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+    backdrop-filter: blur(8px) saturate(180%);
+    -webkit-backdrop-filter: blur(8px) saturate(180%);
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08), inset 0 1px 0 rgba(255,255,255,0.06);
 }
 
 .quicklink-item:hover {
-    transform: translateY(-5px);
-    background: rgba(255, 255, 255, 0.2);
+    transform: translateY(-6px) scale(1.05);
+    background: rgba(255, 255, 255, 0.15);
+    border-color: rgba(255, 255, 255, 0.3);
+    box-shadow: 0 12px 28px rgba(0,0,0,0.18), inset 0 1px 0 rgba(255,255,255,0.12);
 }
 
 .quicklink-icon {
@@ -143,4 +149,30 @@
     text-overflow: ellipsis;
     width: 100%;
     padding: 0 5px;
+}
+
+/* ---- Reduced Motion ---- */
+@media (prefers-reduced-motion: reduce) {
+    .clock-widget,
+    .search-input,
+    .quicklink-item,
+    .bg-media,
+    .bg-overlay,
+    .settings-panel,
+    .settings-trigger {
+        transition: none !important;
+        animation: none !important;
+    }
+
+    .clock-widget:hover {
+        transform: none;
+    }
+
+    .quicklink-item:hover {
+        transform: none;
+    }
+
+    .settings-trigger:hover {
+        transform: none;
+    }
 }

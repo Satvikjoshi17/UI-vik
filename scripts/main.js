@@ -23,7 +23,8 @@ document.addEventListener('DOMContentLoaded', async () => {
         const defaultImage = 'https://images.unsplash.com/photo-1506744626753-1fa28f67c9bf?auto=format&fit=crop&w=1920&q=80';
         
         await bg.setBackground({ type: 'image', src: defaultImage });
-        console.log('Background initialized');
+        bg.enableParallax();
+        console.log('Background initialized with parallax');
 
         // Initialize Core UI Components
         const mainContent = app.querySelector('.main-content');
