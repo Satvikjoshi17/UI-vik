@@ -1,8 +1,9 @@
 import { StorageManager } from '../storage.js';
 
 export class Settings {
-    constructor(appContainer) {
+    constructor(appContainer, widgetManager = null) {
         this.appContainer = appContainer;
+        this.widgetManager = widgetManager;
         this.isOpen = false;
         this.componentVisibility = {};
         this.currentLayout = 'centered';
@@ -97,6 +98,8 @@ export class Settings {
                     </div>
                 </div>
             </div>
+
+            ${this.createWidgetSection()}
         `;
 
         document.body.appendChild(this.panel);
@@ -167,6 +170,15 @@ export class Settings {
                 StorageManager.setPref('bg_blur_val', parseInt(val));
             });
         }
+
+        // Widget toggles
+        if (this.widgetManager) {
+            this.panel.querySelectorAll('[data-widget]').forEach(input => {
+                input.addEventListener('change', async () => {
+                    await this.widgetManager.toggle(input.dataset.widget);
+                });
+            });
+        }
     }
 
     toggle() {
@@ -229,5 +241,33 @@ export class Settings {
                 el.style.display = this.componentVisibility[key] !== false ? '' : 'none';
             }
         });
+    }
+
+    createWidgetSection() {
+        if (!this.widgetManager) return '';
+
+        const widgets = this.widgetManager.getAvailableWidgets();
+        if (widgets.length === 0) return '';
+
+        let togglesHtml = '';
+        for (const w of widgets) {
+            const checked = this.widgetManager.isActive(w.id) ? 'checked' : '';
+            togglesHtml += `
+                <div class="toggle-row">
+                    <span class="toggle-row__label">${w.icon} ${w.name}</span>
+                    <label class="toggle-switch">
+                        <input type="checkbox" data-widget="${w.id}" ${checked}>
+                        <span class="toggle-switch__slider"></span>
+                    </label>
+                </div>
+            `;
+        }
+
+        return `
+            <div class="settings-section">
+                <div class="settings-section__title">Widgets</div>
+                ${togglesHtml}
+            </div>
+        `;
     }
 }

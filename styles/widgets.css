@@ -1,0 +1,193 @@
+/* widgets.css - Widget System Styles */
+
+/* Widget Area Container */
+.widget-area {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1.5rem;
+    justify-content: center;
+    padding: 1rem 2rem 2rem;
+    width: 100%;
+    max-width: 900px;
+    margin: 0 auto;
+}
+
+/* Widget Card (Glassmorphism) */
+.widget-card {
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.18);
+    border-radius: 16px;
+    backdrop-filter: blur(12px) saturate(180%);
+    -webkit-backdrop-filter: blur(12px) saturate(180%);
+    box-shadow: 0 4px 16px rgba(0,0,0,0.1), inset 0 1px 0 rgba(255,255,255,0.08);
+    min-width: 280px;
+    max-width: 400px;
+    flex: 1;
+    transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.25s ease;
+    overflow: hidden;
+}
+
+.widget-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 28px rgba(0,0,0,0.15), inset 0 1px 0 rgba(255,255,255,0.12);
+}
+
+.widget-card__header {
+    padding: 1rem 1.25rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.widget-card__title {
+    font-size: 0.95rem;
+    font-weight: 600;
+    letter-spacing: 0.3px;
+}
+
+.widget-card__body {
+    padding: 1rem 1.25rem;
+}
+
+/* ---------- Notes Widget ---------- */
+
+.widget-notes__textarea {
+    width: 100%;
+    min-height: 120px;
+    background: transparent;
+    border: none;
+    color: inherit;
+    font-family: inherit;
+    font-size: 0.9rem;
+    line-height: 1.6;
+    resize: vertical;
+    outline: none;
+}
+
+.widget-notes__textarea::placeholder {
+    color: rgba(255, 255, 255, 0.4);
+}
+
+/* ---------- Todo Widget ---------- */
+
+.widget-todo__input-row {
+    display: flex;
+    gap: 0.5rem;
+    margin-bottom: 0.75rem;
+}
+
+.widget-todo__input {
+    flex: 1;
+    padding: 0.5rem 0.75rem;
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: 8px;
+    background: rgba(255, 255, 255, 0.08);
+    color: inherit;
+    font-size: 0.85rem;
+    outline: none;
+    transition: border-color 0.2s ease;
+}
+
+.widget-todo__input:focus {
+    border-color: rgba(255, 255, 255, 0.35);
+}
+
+.widget-todo__input::placeholder {
+    color: rgba(255, 255, 255, 0.4);
+}
+
+.widget-todo__add-btn {
+    width: 36px;
+    height: 36px;
+    border: none;
+    border-radius: 8px;
+    background: #6c63ff;
+    color: white;
+    font-size: 1.2rem;
+    cursor: pointer;
+    transition: background 0.2s ease, transform 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.widget-todo__add-btn:hover {
+    background: #5a52e0;
+    transform: scale(1.05);
+}
+
+.widget-todo__list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    max-height: 200px;
+    overflow-y: auto;
+}
+
+.widget-todo__item {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.4rem 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+    transition: opacity 0.2s ease;
+}
+
+.widget-todo__item--done .widget-todo__text {
+    text-decoration: line-through;
+    opacity: 0.5;
+}
+
+.widget-todo__checkbox {
+    accent-color: #6c63ff;
+    cursor: pointer;
+}
+
+.widget-todo__text {
+    flex: 1;
+    font-size: 0.85rem;
+}
+
+.widget-todo__remove {
+    background: none;
+    border: none;
+    color: inherit;
+    font-size: 1.1rem;
+    cursor: pointer;
+    opacity: 0;
+    transition: opacity 0.2s ease;
+    padding: 0 0.25rem;
+}
+
+.widget-todo__item:hover .widget-todo__remove {
+    opacity: 0.6;
+}
+
+.widget-todo__remove:hover {
+    opacity: 1 !important;
+    color: #ff6b6b;
+}
+
+/* ---------- Theme Overrides for Widgets ---------- */
+
+[data-theme="dark"] .widget-card {
+    background: rgba(20, 20, 30, 0.55);
+    color: #ffffff;
+}
+
+[data-theme="light"] .widget-card {
+    background: rgba(255, 255, 255, 0.5);
+    color: #1a1a2e;
+}
+
+[data-theme="light"] .widget-notes__textarea::placeholder,
+[data-theme="light"] .widget-todo__input::placeholder {
+    color: rgba(26, 26, 46, 0.4);
+}
+
+/* ---------- Reduced Motion ---------- */
+@media (prefers-reduced-motion: reduce) {
+    .widget-card {
+        transition: none !important;
+    }
+}

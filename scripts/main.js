@@ -36,7 +36,15 @@ document.addEventListener('DOMContentLoaded', async () => {
         }
 
         // Initialize Settings Panel (Customization Engine)
-        import('./components/settings.js').then(({ Settings }) => new Settings(app));
+        // Initialize Widget System
+        const { WidgetManager } = await import('./widgets/widget-manager.js');
+        const widgetArea = app.querySelector('.widget-area');
+        const widgetManager = new WidgetManager(widgetArea);
+        await widgetManager.init();
+        console.log('Widget system initialized');
+
+        // Pass widgetManager to settings so it can show widget toggles
+        import('./components/settings.js').then(({ Settings }) => new Settings(app, widgetManager));
         console.log('Settings panel initialized');
     }
 });
