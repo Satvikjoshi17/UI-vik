@@ -1,0 +1,146 @@
+/* components.css - Core UI Components */
+
+.main-content {
+    position: relative;
+    z-index: 1; /* Sit above background */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    width: 100vw;
+    gap: 3rem;
+    padding: 2rem;
+}
+
+/* Clock Styles */
+.clock-widget {
+    font-size: 6rem;
+    font-weight: 700;
+    text-shadow: 0 4px 12px rgba(0,0,0,0.3);
+    cursor: pointer;
+    user-select: none;
+    transition: transform 0.2s ease, text-shadow 0.2s ease;
+    letter-spacing: -2px;
+}
+
+.clock-widget:hover {
+    transform: scale(1.02);
+    text-shadow: 0 6px 16px rgba(0,0,0,0.4);
+}
+
+.clock-widget .ampm {
+    font-size: 2rem;
+    margin-left: 0.5rem;
+    font-weight: 500;
+}
+
+/* Search Bar Styles */
+.search-widget {
+    position: relative;
+    width: 100%;
+    max-width: 600px;
+}
+
+.search-input {
+    width: 100%;
+    padding: 1rem 1.5rem;
+    font-size: 1.25rem;
+    border: none;
+    border-radius: 30px;
+    background: rgba(255, 255, 255, 0.2);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    color: white;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    transition: background 0.3s ease, box-shadow 0.3s ease;
+    outline: none;
+}
+
+.search-input::placeholder {
+    color: rgba(255, 255, 255, 0.7);
+}
+
+.search-input:focus {
+    background: rgba(255, 255, 255, 0.3);
+    box-shadow: 0 6px 20px rgba(0,0,0,0.2);
+}
+
+.search-autocomplete {
+    position: absolute;
+    top: calc(100% + 10px);
+    left: 0;
+    width: 100%;
+    background: rgba(20, 20, 20, 0.85);
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
+    border-radius: 15px;
+    overflow: hidden;
+    display: none; /* Hidden by default */
+    flex-direction: column;
+    box-shadow: 0 8px 30px rgba(0,0,0,0.3);
+}
+
+.search-autocomplete.active {
+    display: flex;
+}
+
+.suggestion-item {
+    padding: 0.75rem 1.5rem;
+    cursor: pointer;
+    transition: background 0.2s ease;
+}
+
+.suggestion-item:hover, .suggestion-item.selected {
+    background: rgba(255, 255, 255, 0.15);
+}
+
+/* Quick Links Styles */
+.quicklinks-widget {
+    display: flex;
+    gap: 1.5rem;
+    flex-wrap: wrap;
+    justify-content: center;
+    max-width: 800px;
+}
+
+.quicklink-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    width: 80px;
+    height: 90px;
+    text-decoration: none;
+    color: white;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 15px;
+    transition: transform 0.2s ease, background 0.2s ease;
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
+}
+
+.quicklink-item:hover {
+    transform: translateY(-5px);
+    background: rgba(255, 255, 255, 0.2);
+}
+
+.quicklink-icon {
+    width: 32px;
+    height: 32px;
+    border-radius: 5px;
+    /* fallback if image fails to load */
+    background: rgba(0,0,0,0.2); 
+}
+
+.quicklink-title {
+    font-size: 0.75rem;
+    font-weight: 500;
+    text-align: center;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    width: 100%;
+    padding: 0 5px;
+}

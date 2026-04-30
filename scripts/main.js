@@ -24,5 +24,14 @@ document.addEventListener('DOMContentLoaded', async () => {
         
         await bg.setBackground({ type: 'image', src: defaultImage });
         console.log('Background initialized');
+
+        // Initialize Core UI Components
+        const mainContent = app.querySelector('.main-content');
+        if (mainContent) {
+            import('./components/clock.js').then(({ Clock }) => new Clock(mainContent));
+            import('./components/search.js').then(({ Search }) => new Search(mainContent));
+            import('./components/quicklinks.js').then(({ QuickLinks }) => new QuickLinks(mainContent));
+            console.log('Core UI Components initialized');
+        }
     }
 });
