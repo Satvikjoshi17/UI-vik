@@ -9,5 +9,10 @@
   "permissions": [
     "storage",
     "unlimitedStorage"
-  ]
+  ],
+  "browser_specific_settings": {
+    "gecko": {
+      "id": "ui-vik@ayush.dev"
+    }
+  }
 }

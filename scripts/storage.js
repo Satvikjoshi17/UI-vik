@@ -1,3 +1,5 @@
+import './browser-polyfill.js';
+
 export const StorageManager = {
     async getPref(key, defaultVal = null) {
         if (typeof chrome !== 'undefined' && chrome.storage && chrome.storage.sync) {
