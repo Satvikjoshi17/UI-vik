@@ -2,36 +2,86 @@
 
 /* Widget Area Container */
 .widget-area {
-    position: relative;
-    z-index: 1;
+    position: absolute;
+    top: 12vh; 
+    bottom: 12vh; 
+    z-index: 10;
     display: flex;
-    flex-wrap: wrap;
+    flex-direction: column;
     gap: 1.5rem;
-    justify-content: center;
-    padding: 1rem 2rem 2rem;
-    width: 100%;
-    max-width: 900px;
-    margin: 0 auto;
+    padding: 1rem 2rem;
+    width: auto;
+    max-width: 420px;
+    transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+    overflow-y: auto;
+    overflow-x: hidden;
+    scrollbar-width: none; /* Hide for Firefox */
 }
 
-/* Widget Card (Glassmorphism) */
+.widget-area::-webkit-scrollbar {
+    width: 4px;
+}
+
+.widget-area::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.widget-area::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 10px;
+    transition: background 0.3s ease;
+}
+
+.widget-area:hover::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.15);
+}
+
+.widget-area.left {
+    left: 2vw;
+    align-items: flex-start;
+}
+
+.widget-area.right {
+    right: 2vw;
+    align-items: flex-end;
+}
+
+/* Hide if no widgets active or specifically hidden */
+.widget-area.hidden {
+    display: none;
+}
+
+/* Widget Card (Premium Glassmorphism) */
 .widget-card {
-    background: rgba(255, 255, 255, 0.08);
-    border: 1px solid rgba(255, 255, 255, 0.18);
-    border-radius: 16px;
-    backdrop-filter: blur(12px) saturate(180%);
-    -webkit-backdrop-filter: blur(12px) saturate(180%);
-    box-shadow: 0 4px 16px rgba(0,0,0,0.1), inset 0 1px 0 rgba(255,255,255,0.08);
-    min-width: 280px;
+    background: rgba(20, 20, 25, 0.7);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: 24px;
+    box-shadow: 
+        0 10px 40px rgba(0, 0, 0, 0.2),
+        inset 0 1px 0 rgba(255, 255, 255, 0.05);
+    min-width: 340px;
     max-width: 400px;
-    flex: 1;
-    transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.25s ease;
+    transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
     overflow: hidden;
+    position: relative;
+    border-top: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.widget-card::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, rgba(255,255,255,0.05) 0%, transparent 100%);
+    pointer-events: none;
 }
 
 .widget-card:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 8px 28px rgba(0,0,0,0.15), inset 0 1px 0 rgba(255,255,255,0.12);
+    background: rgba(255, 255, 255, 0.06);
+    border-color: rgba(255, 255, 255, 0.2);
+    transform: translateY(-5px) scale(1.02);
+    box-shadow: 
+        0 20px 50px rgba(0, 0, 0, 0.3),
+        inset 0 1px 0 rgba(255, 255, 255, 0.1);
 }
 
 .widget-card__header {
@@ -120,7 +170,7 @@
     list-style: none;
     padding: 0;
     margin: 0;
-    max-height: 200px;
+    max-height: 320px; 
     overflow-y: auto;
 }
 
@@ -168,26 +218,521 @@
     color: #ff6b6b;
 }
 
-/* ---------- Theme Overrides for Widgets ---------- */
+/* ---------- Quick Launch Widget ---------- */
 
-[data-theme="dark"] .widget-card {
-    background: rgba(20, 20, 30, 0.55);
-    color: #ffffff;
+.ql-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 0.6rem;
 }
 
-[data-theme="light"] .widget-card {
-    background: rgba(255, 255, 255, 0.5);
-    color: #1a1a2e;
+.ql-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 0.7rem 0.4rem;
+    border-radius: var(--card-radius, 14px);
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.04);
+    text-decoration: none;
+    color: var(--text-primary, #fff);
+    transition: all 180ms ease;
+    position: relative;
+    cursor: pointer;
 }
 
-[data-theme="light"] .widget-notes__textarea::placeholder,
-[data-theme="light"] .widget-todo__input::placeholder {
-    color: rgba(26, 26, 46, 0.4);
+.ql-item:hover {
+    background: rgba(255, 255, 255, 0.07);
+    border-color: var(--accent-color, #6C5CE7);
+    transform: translateY(-4px) scale(1.01);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25), 0 0 12px rgba(108, 92, 231, 0.15);
+}
+
+.ql-item-icon {
+    width: 36px;
+    height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(255, 255, 255, 0.06);
+    border-radius: 10px;
+    font-size: 0.9rem;
+    font-weight: 700;
+    color: var(--accent-color, #6C5CE7);
+    transition: all 180ms ease;
+}
+
+.ql-item-icon img {
+    width: 20px;
+    height: 20px;
+    object-fit: contain;
+}
+
+.ql-item:hover .ql-item-icon {
+    background: rgba(108, 92, 231, 0.12);
+    box-shadow: 0 0 10px rgba(108, 92, 231, 0.2);
+}
+
+.ql-item-label {
+    font-size: 0.65rem;
+    font-weight: 500;
+    color: var(--text-secondary, #A0A4B8);
+    max-width: 60px;
+    text-align: center;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    transition: color 180ms ease;
+}
+
+.ql-item:hover .ql-item-label {
+    color: var(--text-primary, #fff);
+}
+
+.ql-item-remove {
+    position: absolute;
+    top: 2px;
+    right: 4px;
+    width: 18px;
+    height: 18px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(255, 107, 107, 0.15);
+    color: #ff6b6b;
+    border: none;
+    border-radius: 50%;
+    font-size: 0.75rem;
+    cursor: pointer;
+    opacity: 0;
+    transition: all 180ms ease;
+}
+
+.ql-item:hover .ql-item-remove {
+    opacity: 1;
+}
+
+.ql-item-remove:hover {
+    background: rgba(255, 107, 107, 0.35);
+    transform: scale(1.15);
+}
+
+.ql-add-btn {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 0.3rem;
+    padding: 0.7rem 0.4rem;
+    border-radius: var(--card-radius, 14px);
+    background: transparent;
+    border: 2px dashed rgba(255, 255, 255, 0.1);
+    color: var(--text-secondary, #A0A4B8);
+    cursor: pointer;
+    transition: all 180ms ease;
+    min-height: 72px;
+}
+
+.ql-add-btn:hover {
+    border-color: var(--accent-color, #6C5CE7);
+    color: var(--accent-color, #6C5CE7);
+    background: rgba(108, 92, 231, 0.05);
+}
+
+.ql-add-icon {
+    font-size: 1.3rem;
+    font-weight: 300;
+    line-height: 1;
+}
+
+.ql-add-label {
+    font-size: 0.6rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+/* Quick Launch Dialog */
+.ql-dialog {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    padding-top: 0.75rem;
+    margin-top: 0.75rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.ql-dialog-input {
+    width: 100%;
+    padding: 0.55rem 0.75rem;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 8px;
+    color: var(--text-primary, #fff);
+    font-size: 0.82rem;
+    font-family: inherit;
+    outline: none;
+    transition: border-color 180ms ease;
+    box-sizing: border-box;
+}
+
+.ql-dialog-input:focus {
+    border-color: var(--accent-color, #6C5CE7);
+}
+
+.ql-dialog-input::placeholder {
+    color: var(--text-secondary, #A0A4B8);
+    opacity: 0.6;
+}
+
+.ql-dialog-actions {
+    display: flex;
+    gap: 0.5rem;
+    justify-content: flex-end;
+}
+
+.ql-dialog-btn {
+    padding: 0.4rem 0.9rem;
+    border: none;
+    border-radius: 8px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 180ms ease;
+    font-family: inherit;
+}
+
+.ql-dialog-cancel {
+    background: rgba(255, 255, 255, 0.06);
+    color: var(--text-secondary, #A0A4B8);
+}
+
+.ql-dialog-cancel:hover {
+    background: rgba(255, 255, 255, 0.12);
+}
+
+.ql-dialog-save {
+    background: var(--accent-gradient, #6C5CE7);
+    color: #fff;
+}
+
+.ql-dialog-save:hover {
+    filter: brightness(1.15);
+    transform: translateY(-1px);
+}
+
+/* ---------- Stats Overview Widget ---------- */
+
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0.6rem;
+}
+
+.stats-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.3rem;
+    padding: 0.8rem 0.4rem;
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.04);
+    border-radius: var(--card-radius, 14px);
+    transition: all 180ms ease;
+}
+
+.stats-card:hover {
+    background: rgba(255, 255, 255, 0.06);
+    border-color: var(--accent-color, #6C5CE7);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+}
+
+.stats-card__icon {
+    font-size: 1.2rem;
+    line-height: 1;
+}
+
+.stats-card__value {
+    font-size: 1.3rem;
+    font-weight: 700;
+    letter-spacing: -0.5px;
+    color: var(--text-primary, #fff);
+    text-shadow: var(--text-glow, none);
+}
+
+[data-theme="gaming"] .stats-lcd-value {
+    font-family: 'Outfit', monospace;
+    color: var(--accent-secondary);
+    text-shadow: 0 0 10px rgba(0, 209, 255, 0.5);
+    letter-spacing: 1px;
+}
+
+.stats-card__label {
+    font-size: 0.6rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--text-secondary, #A0A4B8);
+}
+
+/* ---------- Gaming Theme: Body & Background ---------- */
+
+[data-theme="gaming"] body {
+    background-color: var(--gaming-base, #0F1115);
+}
+
+[data-theme="gaming"] .widget-area {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 2rem;
+    width: 860px;
+    max-width: 95vw;
+    padding: 2rem;
+    align-items: start;
+}
+
+[data-theme="gaming"] .widget-area.right {
+    right: 3vw;
+}
+
+[data-theme="gaming"] .widget-area.left {
+    left: 3vw;
+}
+
+[data-theme="gaming"] .widget-card {
+    min-width: 380px;
+    max-width: 100%;
+    height: 100%; /* Make them equal height in the grid row */
+    background: var(--gaming-surface, #151821) !important;
+    border: 1px solid rgba(108, 92, 231, 0.2) !important;
+    border-top: 2px solid var(--accent-color) !important;
+    box-shadow: var(--gaming-shadow, 0 8px 32px rgba(0, 0, 0, 0.35));
+    border-radius: 4px !important; /* Sharp corners for gaming HUD */
+}
+
+/* HUD Corner Accents */
+[data-theme="gaming"] .widget-card::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    width: 20px;
+    height: 20px;
+    background: linear-gradient(135deg, transparent 50%, var(--accent-secondary) 50%);
+    opacity: 0.6;
+    pointer-events: none;
+}
+
+[data-theme="gaming"] .widget-card:hover {
+    border-color: var(--accent-color) !important;
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.5), 0 0 20px rgba(108, 92, 231, 0.15);
+    transform: translateY(-8px) scale(1.01);
+}
+
+[data-theme="gaming"] .widget-card__header {
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    background: rgba(108, 92, 231, 0.03);
+    padding: 0.8rem 1.25rem;
+}
+
+[data-theme="gaming"] .widget-card__title {
+    color: var(--accent-secondary);
+    text-transform: uppercase;
+    font-weight: 800;
+    letter-spacing: 2px;
+    font-size: 0.8rem;
+    text-shadow: 0 0 10px rgba(0, 209, 255, 0.4);
+}
+
+[data-theme="gaming"] .widget-todo__add-btn {
+    background: var(--accent-gradient, linear-gradient(135deg, #6C5CE7, #00D1FF));
+    border-radius: 4px;
+}
+
+[data-theme="gaming"] .widget-todo__add-btn:hover {
+    filter: brightness(1.2);
+    box-shadow: 0 0 15px var(--accent-color);
+}
+
+[data-theme="gaming"] .widget-todo__input {
+    background: rgba(0, 0, 0, 0.3);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 2px;
+}
+
+[data-theme="gaming"] .widget-todo__input:focus {
+    border-color: var(--accent-secondary);
+}
+
+[data-theme="gaming"] .widget-card__body {
+    max-height: 240px; /* Shortened for extra space */
+    overflow-y: auto;
+    scrollbar-width: none;
+}
+
+[data-theme="gaming"] .widget-card__body::-webkit-scrollbar {
+    display: none;
+}
+
+/* Gaming theme: Search bar glow on focus */
+[data-theme="gaming"] .search-input-wrapper:focus-within {
+    box-shadow:
+        0 30px 70px rgba(0, 0, 0, 0.5),
+        0 0 0 1px var(--accent-color),
+        0 0 30px rgba(108, 92, 231, 0.2);
+    border-radius: 4px;
+}
+
+/* Gaming theme: Clock subtle glow */
+[data-theme="gaming"] .clock-widget {
+    text-shadow: 0 0 12px rgba(108, 92, 231, 0.3);
+    border-radius: 4px;
+    border-left: 4px solid var(--accent-color);
+}
+
+[data-theme="gaming"] .segment.on {
+    box-shadow: 0 0 8px rgba(108, 92, 231, 0.4);
+    background: var(--accent-color);
+}
+
+[data-theme="gaming"] .digit-separator::before,
+[data-theme="gaming"] .digit-separator::after {
+    box-shadow: 0 0 6px rgba(108, 92, 231, 0.5);
+    background: var(--accent-secondary);
+}
+
+/* Gaming theme: Top sites accent on hover */
+[data-theme="gaming"] .top-site-item:hover .top-site-icon {
+    border-color: var(--accent-secondary);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3), 0 0 12px rgba(0, 209, 255, 0.2);
+    border-radius: 4px;
+}
+
+[data-theme="gaming"] .top-site-item:hover .top-site-label {
+    color: var(--accent-secondary);
+}
+
+/* ---------- Professional Theme: Floating Horizontal Dock ---------- */
+
+[data-theme="professional"] .widget-area {
+    display: flex;
+    flex-direction: row; /* Horizontal for Pro */
+    justify-content: center;
+    align-items: flex-end;
+    gap: 1rem;
+    position: fixed;
+    bottom: 3rem;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 90vw;
+    height: auto;
+    top: auto;
+    padding: 0;
+    overflow: visible;
+}
+
+[data-theme="professional"] .widget-card {
+    min-width: 280px;
+    max-width: 320px;
+    background: rgba(15, 15, 20, 0.8) !important;
+    border: 1px solid rgba(255, 255, 255, 0.1) !important;
+    border-radius: 20px !important;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3) !important;
+    transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1) !important;
+}
+
+[data-theme="professional"] .widget-card:hover {
+    transform: translateY(-15px) scale(1.05);
+    background: rgba(25, 25, 35, 0.9) !important;
+    border-color: var(--accent-color) !important;
+}
+
+[data-theme="professional"] .widget-card__header {
+    padding: 0.75rem 1.2rem;
+    background: rgba(255, 255, 255, 0.03);
+}
+
+[data-theme="professional"] .widget-card__title {
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    opacity: 0.8;
+}
+
+[data-theme="professional"] .widget-card__body {
+    max-height: 200px;
+    padding: 1rem;
+}
+
+/* ---------- Character Theme: Soft & Playful ---------- */
+
+[data-theme="character"] .widget-card {
+    background: rgba(255, 245, 248, 0.9) !important;
+    border: 2px solid var(--accent-color) !important;
+    border-radius: 42px !important; /* Bubble */
+    box-shadow: 0 15px 35px rgba(255, 138, 179, 0.2) !important;
+    overflow: visible; /* For paw accents */
+}
+
+/* Playful Ear/Paw Accent */
+[data-theme="character"] .widget-card::before {
+    content: '🐾';
+    position: absolute;
+    top: -15px;
+    right: 20px;
+    font-size: 1.5rem;
+    filter: drop-shadow(0 4px 8px rgba(0,0,0,0.1));
+    z-index: 10;
+}
+
+[data-theme="character"] .widget-card__header {
+    background: var(--accent-color);
+    padding: 0.8rem 1.5rem;
+    border-bottom: none;
+}
+
+[data-theme="character"] .widget-card__title {
+    color: white !important;
+    font-weight: 700;
+    font-size: 1rem;
+}
+
+[data-theme="character"] .widget-card__body {
+    padding: 1.5rem;
+}
+
+[data-theme="character"] .widget-todo__add-btn {
+    background: var(--accent-color);
+    border-radius: 20px;
+    box-shadow: 0 4px 12px rgba(255, 138, 179, 0.3);
+}
+
+[data-theme="character"] .widget-todo__input {
+    background: white;
+    border: 2px solid #ffeef2;
+    border-radius: 15px;
+    color: #2d3436;
+}
+
+[data-theme="character"] .widget-todo__input:focus {
+    border-color: var(--accent-color);
+}
+
+[data-theme="character"] .widget-notes__textarea {
+    color: #2d3436;
+}
+
+[data-theme="character"] .widget-notes__textarea::placeholder {
+    color: rgba(0, 0, 0, 0.2);
 }
 
 /* ---------- Reduced Motion ---------- */
 @media (prefers-reduced-motion: reduce) {
-    .widget-card {
+    .widget-card,
+    .ql-item,
+    .stats-card {
         transition: none !important;
     }
 }

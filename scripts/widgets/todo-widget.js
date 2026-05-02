@@ -55,16 +55,32 @@ export class TodoWidget extends BaseWidget {
             this.items = saved.items;
             this.renderList();
         }
+
+        this.listenForCommands();
     }
 
-    addItem() {
-        const text = this.input.value.trim();
+    listenForCommands() {
+        this._commandListener = (e) => {
+            this.addItem(e.detail.text);
+        };
+        window.addEventListener('todo:add', this._commandListener);
+    }
+
+    addItem(textFromCommand = null) {
+        const text = textFromCommand || this.input.value.trim();
         if (!text) return;
 
         this.items.push({ text, done: false });
-        this.input.value = '';
+        if (!textFromCommand) this.input.value = '';
         this.renderList();
         this.saveState();
+    }
+
+    destroy() {
+        if (this._commandListener) {
+            window.removeEventListener('todo:add', this._commandListener);
+        }
+        super.destroy();
     }
 
     toggleItem(index) {

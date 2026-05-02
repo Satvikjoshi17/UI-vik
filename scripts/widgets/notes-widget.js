@@ -42,22 +42,26 @@ export class NotesWidget extends BaseWidget {
         });
 
         this.bodyElement.appendChild(this.textarea);
+        this.listenForCommands();
     }
 
-    serialize() {
-        return { content: this.content };
-    }
-
-    deserialize(data) {
-        if (data && data.content) {
-            this.content = data.content;
-            if (this.textarea) {
-                this.textarea.value = this.content;
-            }
-        }
+    listenForCommands() {
+        this._commandListener = (e) => {
+            const text = e.detail.text;
+            if (!text) return;
+            
+            const separator = this.textarea.value ? '\n' : '';
+            this.textarea.value += separator + '- ' + text;
+            this.content = this.textarea.value;
+            this.saveState();
+        };
+        window.addEventListener('notes:append', this._commandListener);
     }
 
     destroy() {
+        if (this._commandListener) {
+            window.removeEventListener('notes:append', this._commandListener);
+        }
         clearTimeout(this.debounceTimeout);
         super.destroy();
     }

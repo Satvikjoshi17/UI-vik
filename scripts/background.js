@@ -24,62 +24,137 @@ export class Background {
         } else {
             this.appContainer.appendChild(this.container);
         }
+
+        this.loadInitialBackground();
+        this.listenForChanges();
+    }
+
+    async loadInitialBackground() {
+        const bgData = await StorageManager.getPref('background_data', {
+            type: 'image',
+            src: 'https://images.unsplash.com/photo-1506744626753-1fa28f67c9bf?auto=format&fit=crop&w=1920&q=80'
+        });
+        
+        if (Array.isArray(bgData.src)) {
+            this.startSlideshow(bgData.src);
+        } else {
+            this.setBackground(bgData);
+        }
+        
+        const settings = await StorageManager.getPref('visual_settings', { blur: '0px', opacity: '0.2' });
+        this.setVisualSettings({ ...settings, blur: '0px' }); // Force sharp on load
+    }
+
+    listenForChanges() {
+        window.addEventListener('backgroundUpdate', (e) => {
+            const { type, src } = e.detail;
+            this.stopSlideshow();
+            if (type === 'image' && Array.isArray(src)) {
+                this.startSlideshow(src);
+            } else {
+                this.setBackground({ type, src });
+            }
+        });
+
+        window.addEventListener('visualSettingsUpdate', (e) => {
+            this.setVisualSettings(e.detail);
+        });
+    }
+
+    stopSlideshow() {
+        if (this.slideshowInterval) {
+            clearInterval(this.slideshowInterval);
+            this.slideshowInterval = null;
+        }
+    }
+
+    startSlideshow(images, interval = 15000) {
+        this.stopSlideshow();
+        if (!images || images.length === 0) return;
+
+        let currentIndex = 0;
+        this.setBackground({ type: 'image', src: images[currentIndex] });
+
+        this.slideshowInterval = setInterval(() => {
+            currentIndex = (currentIndex + 1) % images.length;
+            this.setBackground({ type: 'image', src: images[currentIndex] });
+        }, interval);
     }
 
     async setBackground({ type, src }) {
+        if (!src) return;
+        
         return new Promise((resolve) => {
-            let newMediaElement;
+            const mediaContainer = document.createElement('div');
+            mediaContainer.className = 'bg-media-wrapper fade-out';
+            
+            let mainMedia;
+            let ambientBlur;
 
             if (type === 'video') {
-                newMediaElement = document.createElement('video');
-                newMediaElement.autoplay = true;
-                newMediaElement.loop = true;
-                newMediaElement.muted = true;
-                newMediaElement.playsInline = true;
+                mainMedia = document.createElement('video');
+                mainMedia.autoplay = true;
+                mainMedia.loop = true;
+                mainMedia.muted = true;
+                mainMedia.playsInline = true;
+                mainMedia.className = 'bg-main-media';
             } else {
-                newMediaElement = document.createElement('img');
+                // For images, we create the dual-layer effect
+                ambientBlur = document.createElement('img');
+                ambientBlur.className = 'bg-ambient-blur';
+                ambientBlur.src = src;
+
+                mainMedia = document.createElement('img');
+                mainMedia.className = 'bg-main-media';
             }
 
-            newMediaElement.className = 'bg-media fade-out';
-            
             const handleLoad = () => {
-                // Cross-fade
-                if (this.currentMediaElement) {
-                    const oldElement = this.currentMediaElement;
-                    oldElement.classList.replace('fade-in', 'fade-out');
+                if (this.currentMediaWrapper) {
+                    const oldWrapper = this.currentMediaWrapper;
+                    oldWrapper.classList.replace('fade-in', 'fade-out');
                     setTimeout(() => {
-                        if (oldElement.parentNode) {
-                            oldElement.parentNode.removeChild(oldElement);
+                        if (oldWrapper.parentNode) {
+                            oldWrapper.parentNode.removeChild(oldWrapper);
                         }
-                    }, 500); // Wait for transition
+                    }, 1000);
                 }
 
-                newMediaElement.classList.replace('fade-out', 'fade-in');
-                this.currentMediaElement = newMediaElement;
+                mediaContainer.classList.replace('fade-out', 'fade-in');
+                this.currentMediaWrapper = mediaContainer;
+                
+                if (this.parallaxActive) {
+                    mediaContainer.style.transform = 'scale(1.02)';
+                }
                 resolve();
             };
 
             if (type === 'video') {
-                newMediaElement.oncanplay = handleLoad;
-                newMediaElement.src = src;
-                // Preload video to ensure it's ready before cross-fade starts
-                newMediaElement.load();
+                mainMedia.oncanplay = handleLoad;
+                mainMedia.src = src;
+                mainMedia.load();
             } else {
-                newMediaElement.onload = handleLoad;
-                newMediaElement.src = src;
+                mainMedia.onload = handleLoad;
+                mainMedia.src = src;
             }
 
+            if (ambientBlur) mediaContainer.appendChild(ambientBlur);
+            mediaContainer.appendChild(mainMedia);
+            
             // Insert behind the overlay
-            this.container.insertBefore(newMediaElement, this.overlay);
+            this.container.insertBefore(mediaContainer, this.overlay);
         });
     }
 
     setVisualSettings({ blur = '0px', opacity = '0.2' }) {
+        // Ensure background media is sharp by default
+        if (this.currentMediaElement) {
+            this.currentMediaElement.style.filter = 'none';
+        }
         document.documentElement.style.setProperty('--blur-intensity', blur);
         document.documentElement.style.setProperty('--overlay-opacity', opacity);
     }
 
-    enableParallax(intensity = 15, smoothing = 0.08) {
+    enableParallax(intensity = 10, smoothing = 0.08) {
         // Respect reduced motion preference
         const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
         if (prefersReducedMotion) return;
@@ -89,7 +164,6 @@ export class Background {
         this.parallaxActive = true;
 
         const handleMouseMove = (e) => {
-            // Target coordinates (-1 to 1)
             this.mouse.x = (e.clientX / window.innerWidth - 0.5) * 2;
             this.mouse.y = (e.clientY / window.innerHeight - 0.5) * 2;
         };
@@ -101,14 +175,14 @@ export class Background {
                 return;
             }
 
-            // Lerp: current = current + (target - current) * smoothing
             this.currentPos.x += (this.mouse.x - this.currentPos.x) * smoothing;
             this.currentPos.y += (this.mouse.y - this.currentPos.y) * smoothing;
 
             const translateX = this.currentPos.x * intensity * -1;
             const translateY = this.currentPos.y * intensity * -1;
 
-            this.currentMediaElement.style.transform = `translate(${translateX}px, ${translateY}px) scale(1.05)`;
+            // Use a very subtle scale (1.02) to prevent the "over-zoomed" feeling
+            this.currentMediaElement.style.transform = `translate(${translateX}px, ${translateY}px) scale(1.02)`;
             
             requestAnimationFrame(update);
         };
@@ -116,15 +190,8 @@ export class Background {
         document.addEventListener('mousemove', handleMouseMove);
         requestAnimationFrame(update);
 
-        // Cleanup method if needed
-        this._stopParallax = () => {
-            this.parallaxActive = false;
-            document.removeEventListener('mousemove', handleMouseMove);
-        };
-
-        // Initial scale
         if (this.currentMediaElement) {
-            this.currentMediaElement.style.transform = 'scale(1.05)';
+            this.currentMediaElement.style.transform = 'scale(1.02)';
         }
     }
 }

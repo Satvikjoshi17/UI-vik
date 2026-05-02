@@ -8,7 +8,16 @@
   },
   "permissions": [
     "storage",
-    "unlimitedStorage"
+    "unlimitedStorage",
+    "topSites",
+    "tabs",
+    "scripting"
+  ],
+  "background": {
+    "service_worker": "service-worker.js"
+  },
+  "host_permissions": [
+    "<all_urls>"
   ],
   "browser_specific_settings": {
     "gecko": {

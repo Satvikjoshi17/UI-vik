@@ -18,19 +18,35 @@ document.addEventListener('DOMContentLoaded', async () => {
         bg.setVisualSettings({ blur, opacity });
 
         // Load default background (Parallelize)
-        const defaultImage = 'https://images.unsplash.com/photo-1506744626753-1fa28f67c9bf?auto=format&fit=crop&w=1920&q=80';
-        
-        bg.setBackground({ type: 'image', src: defaultImage }).then(() => {
+        const initBg = async () => {
+            let customMedia = await StorageManager.getPref('background_data');
+            let mediaSrc = customMedia?.src || customMedia; // Handle object or direct string
+
+            const oldBrokenUrl = 'https://images.unsplash.com/photo-1506744626753-1fa28f67c9bf?auto=format&fit=crop&w=1920&q=80';
+            const defaultImage = 'https://images.unsplash.com/photo-1470770841072-f978cf4d019e?auto=format&fit=crop&w=1920&q=80';
+            
+            if (mediaSrc === oldBrokenUrl) {
+                await StorageManager.setPref('background_data', null);
+                mediaSrc = null;
+            }
+
+            await bg.setBackground({ 
+                type: customMedia?.type || 'image', 
+                src: mediaSrc || defaultImage 
+            });
             bg.enableParallax();
-            console.log('Background initialized with parallax');
-        });
+            console.log('Background initialized');
+        };
+
+        initBg();
 
         // Initialize Core UI Components (Immediately)
         const mainContent = app.querySelector('.main-content');
         if (mainContent) {
             import('./components/clock.js').then(({ Clock }) => new Clock(mainContent));
             import('./components/search.js').then(({ Search }) => new Search(mainContent));
-            import('./components/quicklinks.js').then(({ QuickLinks }) => new QuickLinks(mainContent));
+            import('./components/topsites.js').then(({ TopSites }) => new TopSites(mainContent));
+            import('./components/media-controller.js').then(({ MediaController }) => new MediaController(mainContent));
             console.log('Core UI Components initialized');
         }
 
@@ -42,10 +58,36 @@ document.addEventListener('DOMContentLoaded', async () => {
             await widgetManager.init();
             
             const { Settings } = await import('./components/settings.js');
-            new Settings(app, widgetManager);
+            const settings = new Settings(app, widgetManager);
+            
+            // Initial position application
+            const savedPos = await StorageManager.getPref('widget_position', 'right');
+            settings.applyWidgetPosition(savedPos);
+            
             console.log('Systems initialized');
+
         };
 
         initSystems();
+
+        // Double-Click to Search logic
+        app.addEventListener('dblclick', async (e) => {
+            // Only trigger on empty space (not on widgets/search/etc)
+            if (e.target !== app && e.target !== mainContent) return;
+
+            const searchMode = await StorageManager.getPref('search_mode', 'always');
+            if (searchMode === 'gesture') {
+                window.dispatchEvent(new CustomEvent('requestSearchFocus'));
+            }
+        });
+
+        // Idea 1: Mouse-Reactive Parallax
+        document.addEventListener('mousemove', (e) => {
+            const x = (e.clientX / window.innerWidth) - 0.5;
+            const y = (e.clientY / window.innerHeight) - 0.5;
+            
+            document.documentElement.style.setProperty('--mouse-x', x.toFixed(3));
+            document.documentElement.style.setProperty('--mouse-y', y.toFixed(3));
+        });
     }
 });

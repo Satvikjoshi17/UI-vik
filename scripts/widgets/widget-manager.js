@@ -1,6 +1,8 @@
 import { StorageManager } from '../storage.js';
 import { NotesWidget } from './notes-widget.js';
 import { TodoWidget } from './todo-widget.js';
+import { QuickLaunchWidget } from './quicklaunch-widget.js';
+import { StatsWidget } from './stats-widget.js';
 
 /**
  * WidgetManager — Orchestrates widget lifecycle.
@@ -29,6 +31,8 @@ export class WidgetManager {
         // Register all available widgets
         this.register(NotesWidget);
         this.register(TodoWidget);
+        this.register(QuickLaunchWidget);
+        this.register(StatsWidget);
 
         // Load which widgets are active
         const activeIds = await StorageManager.getPref('active_widgets', []);
