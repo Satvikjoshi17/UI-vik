@@ -17,7 +17,7 @@ export class Background {
         this.overlay.className = 'bg-overlay';
 
         this.container.appendChild(this.overlay);
-        
+
         // Insert at the beginning of app container
         if (this.appContainer.firstChild) {
             this.appContainer.insertBefore(this.container, this.appContainer.firstChild);
@@ -34,13 +34,13 @@ export class Background {
             type: 'image',
             src: 'https://images.unsplash.com/photo-1506744626753-1fa28f67c9bf?auto=format&fit=crop&w=1920&q=80'
         });
-        
+
         if (Array.isArray(bgData.src)) {
             this.startSlideshow(bgData.src);
         } else {
             this.setBackground(bgData);
         }
-        
+
         const settings = await StorageManager.getPref('visual_settings', { blur: '0px', opacity: '0.2' });
         this.setVisualSettings({ ...settings, blur: '0px' }); // Force sharp on load
     }
@@ -82,68 +82,56 @@ export class Background {
     }
 
     async setBackground({ type, src }) {
-        if (!src) return;
+    if (!src) return;
+             
+    return new Promise((resolve) => {
+        const mediaContainer = document.createElement('div');
+        mediaContainer.className = 'bg-media-wrapper fade-out';
+                     
+        let mainMedia;
+        if (type === 'video') {
+            mainMedia = document.createElement('video');
+            mainMedia.className = 'bg-main-media';
+            
+            // ATRIBUTES MUST COME BEFORE SRC
+            mainMedia.muted = true;
+            mainMedia.defaultMuted = true;
+            mainMedia.loop = true;
+            mainMedia.autoplay = true;
+            mainMedia.setAttribute('playsinline', '');
+            mainMedia.setAttribute('webkit-playsinline', '');
+        } else {
+            mainMedia = document.createElement('img');
+            mainMedia.className = 'bg-main-media';
+        }
+
+        const handleLoad = () => {
+            if (this.currentMediaWrapper) {
+                this.currentMediaWrapper.remove();
+            }
+            mediaContainer.classList.replace('fade-out', 'fade-in');
+            this.currentMediaWrapper = mediaContainer;
+            
+            // Explicitly call play for videos after they are in the DOM
+            if (type === 'video') {
+                mainMedia.play().catch(e => console.error("Playback failed:", e));
+            }
+            resolve();
+        };
+
+        if (type === 'video') {
+            mainMedia.onloadeddata = handleLoad; // Better than oncanplay for background init
+            mainMedia.src = src;
+        } else {
+            mainMedia.onload = handleLoad;
+            mainMedia.src = src;
+        }
         
-        return new Promise((resolve) => {
-            const mediaContainer = document.createElement('div');
-            mediaContainer.className = 'bg-media-wrapper fade-out';
-            
-            let mainMedia;
-            let ambientBlur;
-
-            if (type === 'video') {
-                mainMedia = document.createElement('video');
-                mainMedia.autoplay = true;
-                mainMedia.loop = true;
-                mainMedia.muted = true;
-                mainMedia.playsInline = true;
-                mainMedia.className = 'bg-main-media';
-            } else {
-                // For images, we create the dual-layer effect
-                ambientBlur = document.createElement('img');
-                ambientBlur.className = 'bg-ambient-blur';
-                ambientBlur.src = src;
-
-                mainMedia = document.createElement('img');
-                mainMedia.className = 'bg-main-media';
-            }
-
-            const handleLoad = () => {
-                if (this.currentMediaWrapper) {
-                    const oldWrapper = this.currentMediaWrapper;
-                    oldWrapper.classList.replace('fade-in', 'fade-out');
-                    setTimeout(() => {
-                        if (oldWrapper.parentNode) {
-                            oldWrapper.parentNode.removeChild(oldWrapper);
-                        }
-                    }, 1000);
-                }
-
-                mediaContainer.classList.replace('fade-out', 'fade-in');
-                this.currentMediaWrapper = mediaContainer;
-                
-                if (this.parallaxActive) {
-                    mediaContainer.style.transform = 'scale(1.02)';
-                }
-                resolve();
-            };
-
-            if (type === 'video') {
-                mainMedia.oncanplay = handleLoad;
-                mainMedia.src = src;
-                mainMedia.load();
-            } else {
-                mainMedia.onload = handleLoad;
-                mainMedia.src = src;
-            }
-
-            if (ambientBlur) mediaContainer.appendChild(ambientBlur);
-            mediaContainer.appendChild(mainMedia);
-            
-            // Insert behind the overlay
-            this.container.insertBefore(mediaContainer, this.overlay);
-        });
-    }
+        mediaContainer.appendChild(mainMedia);
+        // Ensure this is inserted behind everything
+        this.container.appendChild(mediaContainer);
+    });
+}
 
     setVisualSettings({ blur = '0px', opacity = '0.2' }) {
         // Ensure background media is sharp by default
@@ -183,7 +171,7 @@ export class Background {
 
             // Use a very subtle scale (1.02) to prevent the "over-zoomed" feeling
             this.currentMediaElement.style.transform = `translate(${translateX}px, ${translateY}px) scale(1.02)`;
-            
+
             requestAnimationFrame(update);
         };
 
