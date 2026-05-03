@@ -5,9 +5,41 @@ import { StorageManager } from './storage.js';
 console.log('UI-vik New Tab initialized');
 
 document.addEventListener('DOMContentLoaded', async () => {
+    setBrowserFavicon();
     const app = document.getElementById('app');
+    const searchMode = await StorageManager.getPref('search_mode', 'always');
+    
+    // Add booting class to everything BUT the search bar if it's hidden
+    document.documentElement.classList.add('booting');
+    
+    if (searchMode !== 'always') {
+        const searchWidget = document.querySelector('.search-widget');
+        if (searchWidget) searchWidget.style.animation = 'none'; 
+    }
+    function setBrowserFavicon() {
+    const favicon = document.getElementById('dynamic-favicon');
+    const userAgent = navigator.userAgent;
+    let iconPath = 'images/default-icon.png';
+
+    if (userAgent.includes("Edg")) {
+        iconPath = 'images/edge-icon.png';
+    } else if (userAgent.includes("Chrome")) {
+        // Check for Brave (Brave often hides in the navigator.brave object)
+        if (navigator.brave && typeof navigator.brave.isBrave === 'function') {
+            iconPath = 'images/brave-icon.png';
+        } else {
+            iconPath = 'images/chrome-icon.png';
+        }
+    }
+
+    if (favicon) {
+        favicon.href = iconPath;
+    }
+}
+    
     if (app) {
         console.log('App container found, ready for component mounting.');
+        
         
         // Initialize Background Component
         const bg = new Background(app);
@@ -80,8 +112,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                 window.dispatchEvent(new CustomEvent('requestSearchFocus'));
             }
         });
-
-        // Idea 1: Mouse-Reactive Parallax
+      
         document.addEventListener('mousemove', (e) => {
             const x = (e.clientX / window.innerWidth) - 0.5;
             const y = (e.clientY / window.innerHeight) - 0.5;
@@ -90,4 +121,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             document.documentElement.style.setProperty('--mouse-y', y.toFixed(3));
         });
     }
+    setTimeout(() => {
+        document.documentElement.classList.remove('booting');
+    }, 1500);
 });

@@ -34,3 +34,75 @@ body {
     -ms-overflow-style: none;  /* IE and Edge */
     scrollbar-width: none;  /* Firefox */
 }
+
+
+/* --- BOOT SEQUENCE ANIMATIONS --- */
+@keyframes cyberFlicker {
+    0% { opacity: 0.1; }
+    2% { opacity: 1; }
+    4% { opacity: 0.3; }
+    10% { opacity: 1; }
+    100% { opacity: 1; }
+}
+
+@keyframes slideAndBlur {
+    0% { 
+        opacity: 0; 
+        transform: translateY(20px) scale(0.95); 
+        filter: blur(10px);
+    }
+    100% { 
+        opacity: 1; 
+        transform: translateY(0) scale(1); 
+        filter: blur(0);
+    }
+}
+
+@keyframes glitchBorder {
+    0% { border-color: rgba(0, 255, 255, 0.2); }
+    5% { border-color: #FF3366; }
+    10% { border-color: #00FFFF; }
+    100% { border-color: rgba(0, 255, 255, 0.6); }
+}
+
+
+
+/* --- LIGHT-FEEL BOOT ANIMATIONS --- */
+
+/* The "Aperture" effect: soft scale and fade */
+@keyframes lightAperture {
+    0% { 
+        opacity: 0; 
+        filter: brightness(2) blur(15px);
+        transform: scale(0.98);
+    }
+    100% { 
+        opacity: 1; 
+        filter: brightness(1) blur(0);
+        transform: scale(1);
+    }
+}
+
+/* A fast horizontal light streak */
+@keyframes lightStreak {
+    0% { transform: translateX(-100%) skewX(-45deg); opacity: 0; }
+    50% { opacity: 0.5; }
+    100% { transform: translateX(200%) skewX(-45deg); opacity: 0; }
+}
+
+/* Subtle glow pulse for initialization */
+@keyframes glowPulse {
+    0% { box-shadow: 0 0 0px var(--accent-color); }
+    50% { box-shadow: 0 0 20px var(--accent-color); }
+    100% { box-shadow: 0 0 0px var(--accent-color); }
+}
+
+/* Apply light base state */
+.booting .clock-widget,
+.booting .search-widget:not(.hidden),
+.booting .media-controller,
+.booting .widget-card,
+.booting .top-sites-widget {
+    opacity: 0;
+    animation: lightAperture 1s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}

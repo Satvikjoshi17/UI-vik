@@ -29,8 +29,14 @@ export class Settings {
         this.showSeconds = await StorageManager.getPref('show_seconds', true);
         this.accentColor = await StorageManager.getPref('accent_color', '#6c63ff');
 
-        // Apply saved theme
+        
+        // Apply saved theme AND force the browser to load the correct CSS file immediately
         document.documentElement.setAttribute('data-theme', this.currentTheme);
+        const themes = ['professional', 'gaming'];
+        themes.forEach(t => {
+            const link = document.getElementById('theme-' + t);
+            if (link) link.disabled = (t !== this.currentTheme);
+        });
 
         // Apply saved settings
         this.applyWidgetPosition(this.widgetPosition);
@@ -65,14 +71,7 @@ export class Settings {
         this.panel = document.createElement('div');
         this.panel.className = 'settings-panel';
         this.panel.innerHTML = `
-            <style>
-                [data-theme="character"] .settings-panel__close { color: #FF5E7E !important; }
-                [data-theme="character"] .settings-btn.destructive { background: #FF5E7E !important; color: white !important; font-weight: 700 !important; }
-                [data-theme="character"] .settings-btn.secondary { background: white !important; color: #FF5E7E !important; border: 2px solid #FF5E7E !important; font-weight: 700 !important; }
-                [data-theme="character"] .settings-btn:not(.secondary):not(.destructive) { background: #FF5E7E !important; color: white !important; font-weight: 700 !important; }
-                [data-theme="character"] .settings-action-row { color: #2B2D42 !important; }
-                [data-theme="character"] .settings-btn { border-color: #FF5E7E !important; }
-            </style>
+            
             <div class="settings-panel__header">
                 <span class="settings-panel__title">Settings</span>
                 <button class="settings-panel__close">✕</button>
@@ -83,7 +82,7 @@ export class Settings {
                 <div class="theme-row">
                     <button class="theme-btn ${this.currentTheme === 'professional' ? 'active' : ''}" data-theme="professional">👔 Pro</button>
                     <button class="theme-btn ${this.currentTheme === 'gaming' ? 'active' : ''}" data-theme="gaming">🎮 Gaming</button>
-                    <button class="theme-btn ${this.currentTheme === 'character' ? 'active' : ''}" data-theme="character">😺 Character</button>
+                    
                 </div>
                 <div class="color-picker-section" style="margin-top: 1.5rem;">
                     <div class="section-subtitle">Accent Spectrum</div>
@@ -460,12 +459,14 @@ export class Settings {
         this.isOpen = true;
         this.panel.classList.add('open');
         this.backdrop.classList.add('active');
+        document.body.classList.add('settings-open');
     }
 
     close() {
         this.isOpen = false;
         this.panel.classList.remove('open');
         this.backdrop.classList.remove('active');
+        document.body.classList.remove('settings-open');
     }
 
     applyAccentColor(color) {
@@ -518,6 +519,12 @@ export class Settings {
         StorageManager.setPref('theme', theme);
         this.panel.querySelectorAll('.theme-btn').forEach(btn => {
             btn.classList.toggle('active', btn.dataset.theme === theme);
+        });
+        // Dynamically enable the correct theme CSS
+        const themes = ['professional', 'gaming'];
+        themes.forEach(t => {
+            const link = document.getElementById('theme-' + t);
+            if (link) link.disabled = (t !== theme);
         });
     }
 
@@ -607,22 +614,32 @@ export class Settings {
 
     applyWidgetPosition(pos) {
         const widgetArea = this.appContainer.querySelector('.widget-area');
-        if (!widgetArea) return;
-        widgetArea.classList.remove('left', 'right');
-        widgetArea.classList.add(pos);
+        if (widgetArea) {
+            widgetArea.classList.remove('left', 'right');
+            widgetArea.classList.add(pos);
+        }
         
-        // Also update clock position to opposite side
+        // Update body class for theme-based positioning
+        document.body.classList.remove('widgets-left', 'widgets-right');
+        document.body.classList.add(`widgets-${pos}`);
+
+        // Update component specific position classes
         const clock = this.appContainer.querySelector('.clock-widget');
         if (clock) {
             clock.classList.remove('pos-left', 'pos-right');
             clock.classList.add(pos === 'left' ? 'pos-right' : 'pos-left');
         }
 
-        // Also update top sites position to opposite side
         const topSites = this.appContainer.querySelector('.top-sites-widget');
         if (topSites) {
             topSites.classList.remove('pos-left', 'pos-right');
             topSites.classList.add(pos === 'left' ? 'pos-right' : 'pos-left');
+        }
+
+        const player = this.appContainer.querySelector('.media-controller');
+        if (player) {
+            player.classList.remove('pos-left', 'pos-right');
+            player.classList.add(`pos-${pos}`);
         }
 
         // Update search bar position to follow widgets (important for Gaming Theme)

@@ -43,7 +43,7 @@
     right: -380px;
     width: 360px;
     height: 100vh;
-    z-index: 200;
+    z-index: 5000;
     padding: 2rem;
     overflow-y: auto;
     transition: right 0.4s cubic-bezier(0.16, 1, 0.3, 1);
@@ -61,7 +61,7 @@
     width: 100%;
     height: 100%;
     background: rgba(0, 0, 0, 0.4);
-    z-index: 150;
+    z-index: 4999;
     opacity: 0;
     pointer-events: none;
     transition: opacity 0.3s ease;
@@ -308,6 +308,7 @@
 
 .spectrum-slider {
     -webkit-appearance: none;
+    appearance: none;
     width: 100%;
     height: 12px;
     border-radius: 6px;
@@ -381,18 +382,16 @@
 
 /* ------------ THEME SYSTEM ------------ */
 
-/* ------------ THEME SYSTEM ------------ */
-
 :root {
     --accent-color: #6c63ff;
     --accent-gradient: linear-gradient(135deg, #6c63ff, #4361ee);
-    --glass-bg: rgba(15, 15, 25, 0.85);
+    --glass-bg: rgba(15, 15, 25, 0.98);
     --glass-border: rgba(255, 255, 255, 0.12);
     --text-primary: #ffffff;
     --text-secondary: rgba(255, 255, 255, 0.6);
     --text-glow: none;
     --card-radius: 24px;
-    --panel-blur: 60px;
+    --panel-blur: 0px;
 }
 
 /* Legacy theme support / Fallback */
@@ -401,12 +400,12 @@
 [data-theme="professional"] {
     --accent-color: #4361ee;
     --accent-gradient: linear-gradient(135deg, #4361ee, #4cc9f0);
-    --glass-bg: rgba(10, 10, 18, 0.72);
+    --glass-bg: rgba(10, 10, 18, 0.98);
     --glass-border: rgba(255, 255, 255, 0.12);
     --text-primary: #ffffff;
     --text-secondary: rgba(255, 255, 255, 0.5);
     --card-radius: 32px;
-    --panel-blur: 80px;
+    --panel-blur: 0px;
 }
 
 [data-theme="gaming"] {
@@ -427,48 +426,9 @@
     --gaming-speed: 180ms ease;
 }
 
-[data-theme="character"] {
-    --accent-color: #FF5E7E;
-    --accent-gradient: linear-gradient(135deg, #FF5E7E, #FF99AC);
-    --glass-bg: rgba(255, 255, 255, 0.95);
-    --glass-border: #FF5E7E;
-    --text-primary: #2B2D42;
-    --text-secondary: #8D99AE;
-    --card-radius: 30px;
-    --panel-blur: 10px;
-    --card-shadow: 6px 6px 0px #FFB3C6, inset 0 0 0 3px #FF5E7E;
-    --text-glow: 2px 2px 0px rgba(255, 94, 126, 0.3);
-}
 
-/* Character Theme Panel Visibility Fixes */
-[data-theme="character"] .settings-panel {
-    background: #FFF5F7 !important;
-    color: #2B2D42 !important;
-}
 
-[data-theme="character"] .settings-section__title,
-[data-theme="character"] .section-subtitle,
-[data-theme="character"] .toggle-row__label,
-[data-theme="character"] .slider-row__label,
-[data-theme="character"] .settings-hint {
-    color: #2B2D42 !important;
-}
 
-[data-theme="character"] .settings-panel__title {
-    color: #FF5E7E !important;
-}
-
-[data-theme="character"] .settings-panel__close {
-    color: #FF5E7E !important;
-}
-
-[data-theme="character"] .settings-btn {
-    box-shadow: 3px 3px 0px #FFB3C6 !important;
-}
-
-[data-theme="character"] .range-slider {
-    background: #FFB3C6;
-}
 .search-input-wrapper,
 .top-sites-widget,
 .clock-widget,
@@ -622,31 +582,4 @@
     box-shadow: none !important;
 }
 
-/* ------ Character Theme (Playful/Asymmetric Layout) ------ */
-/* Add bouncy rotation without breaking grid positioning */
-[data-theme="character"] .clock-widget.pos-left {
-    transform: rotate(-3deg) !important;
-    border-radius: 40px !important;
-}
 
-[data-theme="character"] .clock-widget.pos-right {
-    transform: rotate(3deg) !important;
-    border-radius: 40px !important;
-}
-
-[data-theme="character"] .search-widget {
-    transform: translateX(-50%) rotate(-1deg) !important;
-    max-width: 600px !important;
-}
-
-[data-theme="character"] .top-sites-widget.pos-left {
-    transform: rotate(2deg) !important;
-    border-radius: 40px !important;
-    gap: 1.5rem !important;
-}
-
-[data-theme="character"] .top-sites-widget.pos-right {
-    transform: rotate(-2deg) !important;
-    border-radius: 40px !important;
-    gap: 1.5rem !important;
-}

@@ -614,119 +614,11 @@
     color: var(--accent-secondary);
 }
 
-/* ---------- Professional Theme: Floating Horizontal Dock ---------- */
 
-[data-theme="professional"] .widget-area {
-    display: flex;
-    flex-direction: row; /* Horizontal for Pro */
-    justify-content: center;
-    align-items: flex-end;
-    gap: 1rem;
-    position: fixed;
-    bottom: 3rem;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 90vw;
-    height: auto;
-    top: auto;
-    padding: 0;
-    overflow: visible;
-}
 
-[data-theme="professional"] .widget-card {
-    min-width: 280px;
-    max-width: 320px;
-    background: rgba(15, 15, 20, 0.8) !important;
-    border: 1px solid rgba(255, 255, 255, 0.1) !important;
-    border-radius: 20px !important;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3) !important;
-    transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1) !important;
-}
 
-[data-theme="professional"] .widget-card:hover {
-    transform: translateY(-15px) scale(1.05);
-    background: rgba(25, 25, 35, 0.9) !important;
-    border-color: var(--accent-color) !important;
-}
 
-[data-theme="professional"] .widget-card__header {
-    padding: 0.75rem 1.2rem;
-    background: rgba(255, 255, 255, 0.03);
-}
 
-[data-theme="professional"] .widget-card__title {
-    font-size: 0.75rem;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    opacity: 0.8;
-}
-
-[data-theme="professional"] .widget-card__body {
-    max-height: 200px;
-    padding: 1rem;
-}
-
-/* ---------- Character Theme: Soft & Playful ---------- */
-
-[data-theme="character"] .widget-card {
-    background: rgba(255, 245, 248, 0.9) !important;
-    border: 2px solid var(--accent-color) !important;
-    border-radius: 42px !important; /* Bubble */
-    box-shadow: 0 15px 35px rgba(255, 138, 179, 0.2) !important;
-    overflow: visible; /* For paw accents */
-}
-
-/* Playful Ear/Paw Accent */
-[data-theme="character"] .widget-card::before {
-    content: '🐾';
-    position: absolute;
-    top: -15px;
-    right: 20px;
-    font-size: 1.5rem;
-    filter: drop-shadow(0 4px 8px rgba(0,0,0,0.1));
-    z-index: 10;
-}
-
-[data-theme="character"] .widget-card__header {
-    background: var(--accent-color);
-    padding: 0.8rem 1.5rem;
-    border-bottom: none;
-}
-
-[data-theme="character"] .widget-card__title {
-    color: white !important;
-    font-weight: 700;
-    font-size: 1rem;
-}
-
-[data-theme="character"] .widget-card__body {
-    padding: 1.5rem;
-}
-
-[data-theme="character"] .widget-todo__add-btn {
-    background: var(--accent-color);
-    border-radius: 20px;
-    box-shadow: 0 4px 12px rgba(255, 138, 179, 0.3);
-}
-
-[data-theme="character"] .widget-todo__input {
-    background: white;
-    border: 2px solid #ffeef2;
-    border-radius: 15px;
-    color: #2d3436;
-}
-
-[data-theme="character"] .widget-todo__input:focus {
-    border-color: var(--accent-color);
-}
-
-[data-theme="character"] .widget-notes__textarea {
-    color: #2d3436;
-}
-
-[data-theme="character"] .widget-notes__textarea::placeholder {
-    color: rgba(0, 0, 0, 0.2);
-}
 
 /* ---------- Reduced Motion ---------- */
 @media (prefers-reduced-motion: reduce) {

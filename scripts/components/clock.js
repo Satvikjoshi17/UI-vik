@@ -62,6 +62,23 @@ export class Clock {
 
         this.header.appendChild(this.headerDate);
         this.header.appendChild(this.headerSecondary);
+        // --- INJECT REAL DIAGNOSTICS ELEMENTS ---
+        this.diagnostics = document.createElement('div');
+        this.diagnostics.className = 'clock-diagnostics';
+        
+        this.pingEl = document.createElement('div');
+        this.pingEl.className = 'diag-ping';
+        
+        this.dataEl = document.createElement('div');
+        this.dataEl.className = 'diag-data';
+        
+        this.diagnostics.appendChild(this.pingEl);
+        this.diagnostics.appendChild(this.dataEl);
+        this.header.appendChild(this.diagnostics);
+
+        // Start the live network monitor (Updates every 2 seconds)
+        this.updateNetworkStats();
+        setInterval(() => this.updateNetworkStats(), 2000);
         this.element.appendChild(this.header);
 
         // Digits container
@@ -151,6 +168,28 @@ export class Clock {
             return seg;
         });
         return { container: div, nodes };
+    }
+    updateNetworkStats() {
+        // Access the browser's native connection API
+        const conn = navigator.connection || navigator.mozConnection || navigator.webkitConnection;
+        
+        let pingVal = 'N/A';
+        let speedVal = 'N/A';
+
+        if (conn) {
+            // RTT (Round Trip Time) acts as an estimated Ping in ms
+            if (conn.rtt !== undefined) pingVal = `${conn.rtt}ms`;
+            // Downlink provides estimated bandwidth in Mbps
+            if (conn.downlink !== undefined) speedVal = `${conn.downlink}Mbps`;
+        }
+
+        // Update the real DOM elements (Using <br> to stack the text like the HUD design)
+        if (this.pingEl) {
+            this.pingEl.innerHTML = `<b>PING</b><br> &nbsp;&nbsp; <span style="color:#fff">${pingVal}</span>`;
+        }
+        if (this.dataEl) {
+            this.dataEl.innerHTML = `<b>SPEED DOWN</b><br> &nbsp;&nbsp; <span style="color:#fff">${speedVal}</span>`;
+        }
     }
 
     updateTime() {

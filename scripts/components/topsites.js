@@ -20,21 +20,11 @@ export class TopSites {
     async render() {
         this.element.innerHTML = '';
         
-        const history = await StorageManager.getPref('search_history', []);
-        
         if (typeof chrome !== 'undefined' && chrome.topSites) {
             chrome.topSites.get((sites) => {
-                // Combine Top Sites and Search History
-                // We'll show 4 real top sites and 4 recent searches
-                const top4 = sites.slice(0, 4).map(s => ({ ...s, type: 'site' }));
-                const search4 = history.slice(0, 4).map(h => ({ 
-                    title: h, 
-                    url: `https://www.google.com/search?q=${encodeURIComponent(h)}`,
-                    type: 'search'
-                }));
-
-                const combined = [...top4, ...search4];
-                combined.forEach(item => {
+                // Show only real top sites, limit to 4
+                const topItems = sites.slice(0, 4).map(s => ({ ...s, type: 'site' }));
+                topItems.forEach(item => {
                     this.element.appendChild(this.createItem(item));
                 });
             });
@@ -73,20 +63,14 @@ export class TopSites {
     }
 
     async renderMock() {
-        const history = await StorageManager.getPref('search_history', []);
         const mockSites = [
             { title: 'Google', url: 'https://google.com', type: 'site' },
             { title: 'YouTube', url: 'https://youtube.com', type: 'site' },
-            { title: 'GitHub', url: 'https://github.com', type: 'site' }
+            { title: 'GitHub', url: 'https://github.com', type: 'site' },
+            { title: 'Gmail', url: 'https://gmail.com', type: 'site' }
         ];
         
-        const searches = history.slice(0, 5).map(h => ({ 
-            title: h, 
-            url: `https://www.google.com/search?q=${encodeURIComponent(h)}`,
-            type: 'search'
-        }));
-
-        [...mockSites, ...searches].slice(0, 8).forEach(item => {
+        mockSites.forEach(item => {
             this.element.appendChild(this.createItem(item));
         });
     }

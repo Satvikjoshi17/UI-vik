@@ -170,17 +170,27 @@ export class Search {
     }
 
     async fetchSuggestions(query) {
+        console.log("🔍 [SEARCH DEBUG] 1. fetchSuggestions triggered with query:", query);
         try {
-            const response = await fetch(`https://www.google.com/complete/search?client=firefox&q=${encodeURIComponent(query)}`);
-            const data = await response.json();
+            console.log("🔍 [SEARCH DEBUG] 2. Attempting to fetch from DuckDuckGo...");
+            const response = await fetch(`https://duckduckgo.com/ac/?q=${encodeURIComponent(query)}`);
+            console.log("🔍 [SEARCH DEBUG] 3. Fetch response received. Status:", response.status);
             
-            if (data && Array.isArray(data[1])) {
-                this.suggestions = data[1].slice(0, 8); 
+            const data = await response.json();
+            console.log("🔍 [SEARCH DEBUG] 4. Parsed JSON data from API:", data);
+            
+            if (Array.isArray(data) && data.length > 0) {
+                console.log("🔍 [SEARCH DEBUG] 5. Data is valid. Extracting text...");
+                this.suggestions = data.slice(0, 8).map(item => item.phrase); 
+                console.log("🔍 [SEARCH DEBUG] 6. Final extracted suggestions ready for UI:", this.suggestions);
                 this.renderSuggestions(query);
+            } else {
+                console.log("🔍 [SEARCH DEBUG] 5. API returned empty array. Hiding dropdown.");
+                this.closeAutocomplete(); 
             }
         } catch (error) {
-            console.error('Error fetching autocomplete:', error);
-            // Fallback to history filtering if offline/error
+            console.error('🚨 [SEARCH DEBUG ERROR] Fetch failed completely:', error);
+            // Fallback to history
             const filteredHistory = this.history.filter(h => h.toLowerCase().includes(query.toLowerCase()));
             if (filteredHistory.length > 0) {
                 this.renderHistory(filteredHistory);

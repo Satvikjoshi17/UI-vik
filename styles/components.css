@@ -1,23 +1,8 @@
 /* components.css - Core UI Components */
 
-/* Custom Cursor System */
-[data-theme="gaming"] {
-    cursor: crosshair;
-    /* Fallback */
-    cursor: url('https://cur.cursors-4u.net/games/gam-4/gam372.cur'), auto;
-}
 
-[data-theme="professional"] {
-    cursor: cell;
-    /* Fallback */
-    cursor: url('https://cur.cursors-4u.net/others/oth-9/oth807.cur'), auto;
-}
 
-[data-theme="character"] {
-    cursor: pointer;
-    /* Fallback */
-    cursor: url('https://cur.cursors-4u.net/anime/ani-12/ani1151.cur'), auto;
-}
+
 
 .main-content {
     position: relative;
@@ -32,6 +17,15 @@
 }
 
 /* Clock Styles */
+.clock-widget.pos-left {
+    top: 5vh;
+    left: 4vw;
+}
+
+.clock-widget.pos-right {
+    top: 5vh;
+    right: 4vw;
+}
 
 /* Premium Minimalist 7-Segment Styles */
 .clock-widget {
@@ -53,17 +47,33 @@
 
 [data-theme="gaming"] .clock-widget,
 [data-theme="gaming"] .top-sites-widget {
-    background: rgba(10, 12, 18, 0.9) !important;
+    background: rgba(10, 12, 18, 0.98) !important;
     border-radius: 4px !important;
     border: 1px solid var(--accent-color) !important;
     border-top: 4px solid var(--accent-color) !important;
     box-shadow: 0 0 20px rgba(108, 92, 231, 0.2) !important;
     backdrop-filter: none !important;
+    transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1) !important;
 }
+
+body.settings-open [data-theme="gaming"] .clock-widget.pos-left {
+    left: 400px !important;
+}
+body.settings-open [data-theme="gaming"] .clock-widget.pos-right {
+    right: 400px !important;
+}
+
+body.settings-open [data-theme="gaming"] .top-sites-widget.pos-left {
+    left: 400px !important;
+}
+body.settings-open [data-theme="gaming"] .top-sites-widget.pos-right {
+    right: 400px !important;
+}
+
 
 [data-theme="professional"] .clock-widget,
 [data-theme="professional"] .top-sites-widget {
-    background: rgba(15, 17, 26, 0.92) !important;
+    background: rgba(15, 17, 26, 0.98) !important;
     border-radius: 24px !important;
     border: 1px solid rgba(255, 255, 255, 0.08) !important;
     box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5) !important;
@@ -443,7 +453,7 @@
     align-items: center;
     transition: all 0.7s cubic-bezier(0.16, 1, 0.3, 1);
     opacity: 1;
-    z-index: 100;
+    z-index: 3000;
 }
 
 /* Professional Theme: Position Search Bar at the Top Edge of the Widgets */
@@ -582,7 +592,7 @@
     bottom: calc(100% + 20px);
     left: 0;
     right: 0;
-    background: var(--glass-bg);
+    background: rgba(15, 15, 25, 0.98); /* Increased opacity for better readability */
     border: 1px solid var(--glass-border);
     border-radius: var(--card-radius);
     overflow: hidden;
@@ -610,7 +620,7 @@
     font-weight: 700;
     text-transform: uppercase;
     letter-spacing: 0.1em;
-    color: rgba(255, 255, 255, 0.4);
+    color: rgba(255, 255, 255, 0.7); /* Increased contrast */
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -625,7 +635,7 @@
     cursor: pointer;
     border-radius: 14px;
     transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
-    color: rgba(255, 255, 255, 0.8);
+    color: rgba(255, 255, 255, 0.95); /* Sharper text */
 }
 
 .suggestion-item:hover,
@@ -643,7 +653,7 @@
 .item-icon {
     width: 18px;
     height: 18px;
-    opacity: 0.4;
+    opacity: 0.7; /* Brighter icons */
     display: flex;
     align-items: center;
     justify-content: center;
@@ -694,7 +704,7 @@
 .top-sites-widget {
     position: absolute;
     display: grid;
-    grid-template-columns: repeat(4, 1fr);
+    grid-template-columns: repeat(auto-fit, minmax(70px, 1fr));
     gap: 1rem;
     padding: 1.2rem;
     background: rgba(20, 20, 25, 0.6);
@@ -706,25 +716,45 @@
 }
 
 .top-sites-widget.pos-left {
-    bottom: 6vh;
-    left: 5vw;
+    bottom: 5vh;
+    left: 4vw;
 }
 
 .top-sites-widget.pos-right {
-    bottom: 6vh;
-    right: 5vw;
+    bottom: 5vh;
+    right: 4vw;
 }
 
-/* Professional Theme: Shift Top Sites to Top Right */
+/* Professional Theme: Minimalist Overrides */
 [data-theme="professional"] .top-sites-widget {
-    top: 5vh !important;
-    right: 4vw !important;
-    bottom: auto !important;
-    left: auto !important;
     background: transparent !important;
     border: none !important;
     box-shadow: none !important;
     padding: 0 !important;
+    transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1) !important;
+    z-index: 5;
+}
+
+/* Respect swapped position classes in Pro theme */
+[data-theme="professional"] .top-sites-widget.pos-right {
+    top: 5vh !important;
+    left: 4vw !important;
+    right: auto !important;
+    bottom: auto !important;
+}
+
+[data-theme="professional"] .top-sites-widget.pos-left {
+    top: 5vh !important;
+    right: 4vw !important;
+    left: auto !important;
+    bottom: auto !important;
+}
+
+body.settings-open [data-theme="professional"] .top-sites-widget.pos-right {
+    left: 400px !important;
+}
+body.settings-open [data-theme="professional"] .top-sites-widget.pos-left {
+    right: 400px !important;
 }
 
 [data-theme="professional"] .top-site-icon {
@@ -739,15 +769,35 @@
     opacity: 0.6;
 }
 
-/* Ensure Clock moves to Top Left in Pro to avoid overlap */
+/* Professional Theme: Clock Overrides */
 [data-theme="professional"] .clock-widget {
-    top: 5vh !important;
-    left: 4vw !important;
-    right: auto !important;
     background: transparent !important;
     border: none !important;
     box-shadow: none !important;
     padding: 0 !important;
+    transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1) !important;
+    z-index: 5;
+}
+
+[data-theme="professional"] .clock-widget.pos-right {
+    top: 5vh !important;
+    right: 4vw !important;
+    left: auto !important;
+    bottom: auto !important;
+}
+
+[data-theme="professional"] .clock-widget.pos-left {
+    top: 5vh !important;
+    left: 4vw !important;
+    right: auto !important;
+    bottom: auto !important;
+}
+
+body.settings-open [data-theme="professional"] .clock-widget.pos-right {
+    right: 400px !important;
+}
+body.settings-open [data-theme="professional"] .clock-widget.pos-left {
+    left: 400px !important;
 }
 
 .top-site-item {
@@ -813,79 +863,19 @@
     opacity: 1;
 }
 
-/* Character Theme UI Overrides */
-/* Character Theme UI Overrides - Centered "Perfect" Layout */
-[data-theme="character"] .clock-widget {
-    top: 4vh !important;
-    left: 50% !important;
-    right: auto !important;
-    transform: translateX(-50%) rotate(-2deg) !important;
-    background: #FFF5F7 !important;
-    border: 3px solid #FF5E7E !important;
-    box-shadow: 8px 8px 0px #FFB3C6 !important;
-    z-index: 1000 !important;
+/* Character Theme UI Overrides - Neo-Kawaii "Sticker" Aesthetic */
+@keyframes float-bubble {
+    0% { transform: translateX(-50%) translateY(0) rotate(-2deg); }
+    50% { transform: translateX(-50%) translateY(-10px) rotate(1deg); }
+    100% { transform: translateX(-50%) translateY(0) rotate(-2deg); }
 }
+                                            
 
-[data-theme="character"] .clock-header {
-    color: #FF5E7E !important;
-    font-weight: 700;
-}
 
-[data-theme="character"] .digit-separator::before,
-[data-theme="character"] .digit-separator::after {
-    background: #FF5E7E !important;
-    box-shadow: none !important;
-}
 
-[data-theme="character"] .clock-digits {
-    color: #2B2D42 !important;
-}
 
-[data-theme="character"] .search-widget {
-    bottom: 12vh !important;
-    left: 50% !important;
-    right: auto !important;
-    transform: translateX(-50%) rotate(1deg) !important;
-    max-width: 550px !important;
-    z-index: 1000 !important;
-}
 
-[data-theme="character"] .search-input {
-    color: #2B2D42 !important;
-    background: white !important;
-    border-radius: 40px !important;
-}
 
-[data-theme="character"] .search-input::placeholder {
-    color: rgba(43, 45, 66, 0.4) !important;
-}
-
-[data-theme="character"] .search-icon-inline {
-    color: #FF5E7E !important;
-}
-
-[data-theme="character"] .top-sites-widget {
-    bottom: 3vh !important;
-    left: 50% !important;
-    right: auto !important;
-    transform: translateX(-50%) rotate(-1deg) !important;
-    background: #FFF5F7 !important;
-    border: 3px solid #FF5E7E !important;
-    border-radius: 40px !important;
-    padding: 1rem 2rem !important;
-    z-index: 1000 !important;
-}
-
-[data-theme="character"] .top-site-label {
-    color: #2B2D42 !important;
-    font-weight: 700;
-}
-
-[data-theme="character"] .top-site-icon {
-    background: white !important;
-    border: 2px solid #FFB3C6 !important;
-    border-radius: 18px !important;
-}
 
 /* Media Controller Styles */
 /* Media Controller Styles */
@@ -895,12 +885,12 @@
     align-items: center;
     gap: 1.5rem;
     padding: 1rem 1.8rem;
-    background: rgba(15, 17, 26, 0.82);
-    backdrop-filter: blur(25px) saturate(210%);
+    background: rgba(10, 12, 18, 0.98);
+    backdrop-filter: none;
     border-radius: 24px;
     border: 1px solid rgba(255, 255, 255, 0.12);
     transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
-    z-index: 100;
+    z-index: 2500;
     box-shadow: 0 25px 60px rgba(0, 0, 0, 0.5), 0 0 20px rgba(255, 255, 255, 0.02);
     pointer-events: auto;
     width: 440px;
@@ -954,7 +944,7 @@
     left: 0;
     right: 0;
     background: rgba(15, 17, 26, 0.95);
-    backdrop-filter: blur(25px);
+    backdrop-filter: none;
     border-radius: 20px;
     border: 1px solid rgba(255, 255, 255, 0.1);
     height: 0;
@@ -962,7 +952,7 @@
     overflow: hidden;
     transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
     z-index: 200;
-    box-shadow: 0 20px 50px rgba(0,0,0,0.6);
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6);
 }
 
 .media-controller.history-open .media-history-panel {
@@ -1039,16 +1029,20 @@
     bottom: auto;
     left: 50%;
     transform: translateX(-50%);
-    z-index: 2000;
+    z-index: 2500;
+    transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1) !important;
+}
+
+body.settings-open [data-theme="professional"] .media-controller {
+    /* Re-center player in remaining space (shift left by half of 360px sidebar) */
+    transform: translateX(calc(-50% - 180px)) !important;
 }
 
 /* Gaming: Top Left Tactical HUD */
 [data-theme="gaming"] .media-controller {
-    top: 3vh;
-    left: 3vw;
-    right: auto;
-    bottom: auto;
+    top: 2vh;
     transform: none;
+    transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1) !important;
     width: 320px; /* Even more compact for Gaming HUD */
     height: 70px;
     background: rgba(10, 12, 18, 0.98);
@@ -1057,7 +1051,26 @@
     border-right: 1px solid var(--accent-color);
     border-radius: 4px;
     box-shadow: 10px 0 20px rgba(108, 92, 231, 0.15);
-    z-index: 2000;
+    z-index: 2500;
+}
+
+/* Position based on state */
+[data-theme="gaming"] .media-controller.pos-left {
+    left: 3vw;
+    right: auto;
+}
+
+[data-theme="gaming"] .media-controller.pos-right {
+    right: 3vw;
+    left: auto;
+}
+
+body.settings-open [data-theme="gaming"] .media-controller.pos-right {
+    right: 400px !important;
+}
+
+body.settings-open [data-theme="gaming"] .media-controller.pos-left {
+    left: 400px !important;
 }
 
 [data-theme="gaming"] .media-art {
@@ -1065,34 +1078,7 @@
     height: 48px;
 }
 
-/* Character: Floating Center HUD */
-[data-theme="character"] .media-controller {
-    top: 18vh; /* Floating below the centered clock */
-    left: 50%;
-    right: auto;
-    transform: translateX(-50%) rotate(1deg);
-    background: #FFF5F7;
-    border: 3px solid #FF5E7E;
-    border-radius: 40px;
-    box-shadow: 8px 8px 0px #FFB3C6;
-    z-index: 2000;
-}
 
-[data-theme="character"] .m-btn {
-    color: #FF5E7E;
-}
-
-[data-theme="character"] .m-btn svg {
-    color: #FF5E7E;
-}
-
-[data-theme="character"] .play-btn {
-    background: #FF5E7E !important;
-}
-
-[data-theme="character"] .play-btn svg {
-    fill: #fff !important;
-}
 
 /* Minimized State: The Bubble */
 .media-controller.minimized {
@@ -1139,7 +1125,7 @@
     left: -150px; /* Center relative to bubble */
     width: 380px;
     background: rgba(15, 17, 26, 0.98);
-    backdrop-filter: blur(25px);
+    backdrop-filter: none;
     border-radius: 24px;
     border: 1px solid rgba(255, 255, 255, 0.12);
     height: 0;
@@ -1198,10 +1184,6 @@
     text-overflow: ellipsis;
 }
 
-[data-theme="character"] .media-title,
-[data-theme="character"] .media-artist {
-    color: #2B2D42;
-}
 
 .media-artist {
     font-size: 0.85rem;

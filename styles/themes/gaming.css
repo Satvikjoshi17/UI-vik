@@ -1,0 +1,993 @@
+/* ========================================================================= */
+/* UI-VIK: SPIDER-MAN HUD THEME (BULLETPROOF IMAGE MATCH)             */
+/* ========================================================================= */
+
+[data-theme="gaming"] {
+    cursor: crosshair;
+
+    --gaming-base: #020205; 
+    --accent-cyan: #00FFFF; 
+    --accent-red: #FF3366;  
+    --bg-glass: rgba(12, 18, 25, 0.75);
+    font-family: 'Outfit', 'Inter', sans-serif;
+}
+
+[data-theme="gaming"] body {
+    background-color: var(--gaming-base);
+}
+
+
+/* Gaming Specific Boot Sequence */
+[data-theme="gaming"].booting .clock-widget { animation-delay: 0.1s; animation-name: cyberFlicker, slideAndBlur; }
+[data-theme="gaming"].booting .media-controller { animation-delay: 0.3s; }
+[data-theme="gaming"].booting .search-widget { animation-delay: 0.4s; }
+[data-theme="gaming"].booting .widget-area { animation-delay: 0.5s; }
+
+/* The Red Hardware Accent line "charges up" */
+[data-theme="gaming"].booting .widget-card::before,
+[data-theme="gaming"].booting .media-controller::before {
+    width: 0%;
+    transition: width 1.2s ease-in-out 0.6s;
+}
+[data-theme="gaming"]:not(.booting) .widget-card::before,
+[data-theme="gaming"]:not(.booting) .media-controller::before {
+    width: 70%;
+}
+
+/* ------------------------------------------------------------------------- */
+/* 1. CLEANUP (HIDE UNWANTED ELEMENTS)                                       */
+/* ------------------------------------------------------------------------- */
+
+[data-theme="gaming"] .quicklinks-widget,
+[data-theme="gaming"] .ampm {
+    display: none !important; 
+}
+
+/* ------------------------------------------------------------------------- */
+/* 2. UNIVERSAL HUD PANEL STYLING                                            */
+/* ------------------------------------------------------------------------- */
+/* Target all possible JS position classes to prevent reload overrides */
+[data-theme="gaming"] .widget-card,
+[data-theme="gaming"] .clock-widget,
+[data-theme="gaming"] .clock-widget.pos-left,
+[data-theme="gaming"] .clock-widget.pos-right,
+[data-theme="gaming"] .media-controller,
+[data-theme="gaming"] .media-controller.pos-left,
+[data-theme="gaming"] .media-controller.pos-right {
+    background: rgba(10, 14, 20, 0.65) !important; 
+    backdrop-filter: blur(16px) saturate(120%) !important; 
+    border: 1.5px solid rgba(0, 220, 220, 0.6) !important; 
+    border-radius: 8px !important;
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5), inset 0 0 20px rgba(0, 220, 220, 0.08) !important;
+    position: absolute !important;
+    overflow: hidden;
+    transition: box-shadow 0.3s ease, border-color 0.3s ease !important;
+}
+
+[data-theme="gaming"] .widget-card:hover,
+[data-theme="gaming"] .media-controller:hover {
+    border-color: rgba(0, 220, 220, 1) !important;
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.6), inset 0 0 30px rgba(0, 220, 220, 0.12) !important;
+}
+
+[data-theme="gaming"] .widget-card::before,
+[data-theme="gaming"] .media-controller::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 15%;
+    width: 70%;
+    height: 3px; 
+    background: var(--accent-red) !important;
+    box-shadow: 0 0 12px var(--accent-red) !important;
+    border-radius: 0 0 4px 4px;
+    z-index: 10;
+}
+
+[data-theme="gaming"] .widget-card::after,
+[data-theme="gaming"] .media-controller::after {
+    content: '';
+    position: absolute;
+    top: 16px;
+    right: 32px;
+    width: 3.5px;
+    height: 3.5px;
+    border-radius: 50%;
+    background: var(--accent-red) !important;
+    box-shadow: 8px 0 0 var(--accent-red), 16px 0 0 var(--accent-red), 0 0 5px var(--accent-red) !important;
+    z-index: 10;
+}
+
+[data-theme="gaming"] .widget-card__header {
+    background: linear-gradient(to bottom, rgba(0, 220, 220, 0.1), transparent) !important;
+    border-bottom: 1px solid rgba(0, 220, 220, 0.25) !important;
+    padding: 1rem 1.5rem !important;
+    display: flex;
+    align-items: center;
+}
+
+[data-theme="gaming"] .widget-card__title {
+    color: var(--accent-cyan) !important;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    text-shadow: 0 0 8px rgba(0, 220, 220, 0.5);
+    font-size: 0.8rem !important;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+/* ------------------------------------------------------------------------- */
+/* 3. WIDGET AREA (STRICT GRID - BULLETPROOF LEFT OVERRIDE)                  */
+/* ------------------------------------------------------------------------- */
+[data-theme="gaming"] .widget-area,
+[data-theme="gaming"] .widget-area.left,
+[data-theme="gaming"] .widget-area.right {
+    position: absolute !important;
+    top: 140px !important; 
+    left: 4vw !important;
+    right: auto !important;
+    bottom: auto !important;
+    display: grid !important;
+    grid-template-columns: 400px 400px !important; 
+    grid-template-rows: 240px 240px !important; 
+    gap: 1.2rem !important; 
+    padding: 0 !important;
+    max-width: none !important;
+    overflow: visible !important;
+    transform: none !important;
+}
+
+[data-theme="gaming"] .widget-card {
+    position: relative !important;
+    top: auto !important; left: auto !important; right: auto !important; bottom: auto !important;
+    width: 100% !important;
+    height: 100% !important;
+    margin: 0 !important;
+    transform: none !important;
+}
+
+/* --- THEMATIC CSS REBRANDING --- */
+[data-theme="gaming"] .widget-notes .widget-card__title { font-size: 0 !important; }
+[data-theme="gaming"] .widget-notes .widget-card__title::after { content: '\1F4DD STRATEGY LOG'; font-size: 0.85rem; }
+[data-theme="gaming"] .widget-todo .widget-card__title { font-size: 0 !important; }
+[data-theme="gaming"] .widget-todo .widget-card__title::after { content: '\1F4DC QUEST TRACKER'; font-size: 0.85rem; }
+[data-theme="gaming"] .widget-quicklaunch .widget-card__title { font-size: 0 !important; }
+[data-theme="gaming"] .widget-quicklaunch .widget-card__title::after { content: '\1F680 GAMING ARSENAL'; font-size: 0.85rem; }
+[data-theme="gaming"] .widget-stats .widget-card__title { font-size: 0 !important; }
+[data-theme="gaming"] .widget-stats .widget-card__title::after { content: '\1F4CA ACTIVE CAMPAIGN METRICS'; font-size: 0.85rem; }
+
+/* Widget Interior Polish */
+[data-theme="gaming"] .widget-notes__textarea { color: rgba(255, 255, 255, 0.9) !important; font-size: 0.95rem !important; line-height: 1.6; background: transparent !important; }
+[data-theme="gaming"] .widget-notes .widget-card__body { background-image: linear-gradient(30deg, rgba(0, 220, 220, 0.05) 1px, transparent 1px), linear-gradient(150deg, rgba(0, 220, 220, 0.05) 1px, transparent 1px); background-size: 24px 41px; background-position: 0 0, 12px 20.5px; }
+[data-theme="gaming"] .widget-todo__input { background: rgba(0, 0, 0, 0.4) !important; border: 1px solid rgba(0, 220, 220, 0.3) !important; color: #fff !important; border-radius: 4px !important; }
+[data-theme="gaming"] .widget-todo__input:focus { border-color: var(--accent-cyan) !important; box-shadow: 0 0 10px rgba(0, 220, 220, 0.2) !important; }
+[data-theme="gaming"] .widget-todo__add-btn { background: var(--accent-cyan) !important; color: #000 !important; border-radius: 4px !important; font-weight: 800; }
+[data-theme="gaming"] .widget-todo__item { border-bottom: 1px solid rgba(0, 220, 220, 0.1) !important; padding: 0.6rem 0 !important; }
+[data-theme="gaming"] .widget-todo__checkbox { accent-color: var(--accent-cyan) !important; }
+[data-theme="gaming"] .ql-item { background: transparent !important; border: none !important; }
+[data-theme="gaming"] .ql-item-icon { background: rgba(0, 0, 0, 0.5) !important; border: 1px solid rgba(0, 220, 220, 0.4) !important; border-radius: 8px !important; width: 56px !important; height: 56px !important; transition: all 0.2s ease !important; }
+[data-theme="gaming"] .ql-item:hover .ql-item-icon { border-color: var(--accent-cyan) !important; background: rgba(0, 220, 220, 0.1) !important; box-shadow: 0 0 15px rgba(0, 220, 220, 0.3) !important; transform: scale(1.05); }
+[data-theme="gaming"] .stats-card { background: transparent !important; border: none !important; }
+[data-theme="gaming"] .stats-lcd-value { color: var(--accent-red) !important; text-shadow: 0 0 12px var(--accent-red) !important; font-family: 'Outfit', monospace !important; font-size: 2rem !important; font-weight: 800 !important; }
+[data-theme="gaming"] .stats-card__label { color: rgba(255, 255, 255, 0.6) !important; letter-spacing: 1px; font-weight: 600 !important; }
+[data-theme="gaming"] ::-webkit-scrollbar { width: 4px !important; }
+[data-theme="gaming"] ::-webkit-scrollbar-track { background: rgba(0, 0, 0, 0.2) !important; }
+[data-theme="gaming"] ::-webkit-scrollbar-thumb { background: var(--accent-cyan) !important; border-radius: 4px !important; box-shadow: 0 0 10px var(--accent-cyan); }
+
+/* ------------------------------------------------------------------------- */
+/* 4. DOCK (TOP SITES) - BULLETPROOF RIGHT OVERRIDE                          */
+/* ------------------------------------------------------------------------- */
+[data-theme="gaming"] .top-sites-widget,
+[data-theme="gaming"] .top-sites-widget.pos-left,
+[data-theme="gaming"] .top-sites-widget.pos-right {
+    position: absolute !important;
+    bottom: 4vh !important;
+    right: 4vw !important;
+    left: auto !important;
+    top: auto !important;
+    transform: none !important;
+    display: flex !important;
+    flex-direction: row !important;
+    gap: 1.2rem !important;
+    background: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+    padding: 0 !important;
+}
+
+[data-theme="gaming"] .top-site-icon {
+    position: relative !important;
+    width: 60px !important; height: 60px !important;
+    background: var(--accent-cyan) !important; 
+    border: none !important; 
+    border-radius: 0 !important;
+    box-shadow: none !important; 
+    clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1) !important;
+    display: flex !important; align-items: center !important; justify-content: center !important;
+}
+[data-theme="gaming"] .top-site-icon::before {
+    content: ''; position: absolute; inset: 2px; 
+    background: rgba(12, 16, 24, 0.95) !important; 
+    clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+    z-index: 0; transition: background 0.3s ease !important;
+}
+[data-theme="gaming"] .top-site-icon img, [data-theme="gaming"] .top-site-icon svg {
+    position: relative; z-index: 1; width: 28px !important; height: 28px !important; object-fit: contain; transition: transform 0.3s ease;
+}
+[data-theme="gaming"] .top-site-item:hover .top-site-icon { background: var(--accent-red) !important; transform: translateY(-5px) !important; }
+[data-theme="gaming"] .top-site-item:hover .top-site-icon::before { background: rgba(0, 220, 220, 0.1) !important; }
+[data-theme="gaming"] .top-site-item:hover .top-site-icon img, [data-theme="gaming"] .top-site-item:hover .top-site-icon svg { transform: scale(1.15); }
+[data-theme="gaming"] .top-site-item { flex-direction: column !important; color: #fff !important; padding: 0 !important; }
+[data-theme="gaming"] .top-site-label { font-size: 0.75rem !important; text-shadow: 0 0 5px #000; margin-top: 8px !important; }
+
+/* ------------------------------------------------------------------------- */
+/* 5. MEDIA CONTROLLER (PERFECT CYBER-DECK PLAYER)                           */
+/* ------------------------------------------------------------------------- */
+
+/* BASE CONTAINER */
+[data-theme="gaming"] .media-controller:not(.minimized) {
+    position: absolute !important;
+    top: 30px !important; 
+    left: 4vw !important; 
+    right: auto !important;
+    bottom: auto !important; 
+    width: 460px !important; /* Widened to perfectly fit controls + text */
+    height: 100px !important; 
+    padding: 0 !important; 
+    background: rgba(12, 18, 25, 0.85) !important;
+    border: 2px solid #1c525c !important;
+    border-radius: 12px !important;
+    clip-path: polygon(0 0, calc(100% - 15px) 0, 100% 15px, 100% 100%, 15px 100%, 0 calc(100% - 15px)) !important;
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.6) !important;
+    display: block !important;
+    overflow: visible !important;
+    z-index: 50 !important;
+}
+
+/* Red Hardware Accent (Top Left) */
+[data-theme="gaming"] .media-controller:not(.minimized)::before {
+    content: '';
+    position: absolute !important;
+    top: 0 !important; 
+    left: 25px !important;
+    width: 60px !important; 
+    height: 3px !important;
+    background: var(--accent-red) !important;
+    box-shadow: 0 0 10px var(--accent-red) !important;
+    border-radius: 0 0 4px 4px !important;
+    z-index: 10 !important;
+}
+
+/* Cyan "AUDIO UPLINK" Tab (Fixed conflict - Now perfectly at Bottom Right) */
+[data-theme="gaming"] .media-controller:not(.minimized)::after {
+    content: 'AUDIO UPLINK' !important;
+    position: absolute !important;
+    top: auto !important; /* Kills the top-right glitch */
+    bottom: 0 !important; 
+    right: 25px !important;
+    width: auto !important;
+    height: auto !important;
+    border-radius: 4px 4px 0 0 !important;
+    background: rgba(0, 220, 220, 0.1) !important;
+    border: 1px solid var(--accent-cyan) !important;
+    border-bottom: none !important;
+    color: var(--accent-cyan) !important;
+    font-size: 0.6rem !important; 
+    font-weight: 800 !important; 
+    letter-spacing: 2px !important;
+    padding: 2px 10px !important;
+    box-shadow: none !important;
+    clip-path: none !important;
+    z-index: 10 !important;
+}
+
+/* 1. ALBUM ART (Perfectly Centered Left) */
+[data-theme="gaming"] .media-art { 
+    position: absolute !important;
+    top: 50% !important; 
+    transform: translateY(-50%) !important;
+    left: 15px !important;
+    width: 68px !important; 
+    height: 68px !important; 
+    border-radius: 6px !important; 
+    border: 2px solid var(--accent-cyan) !important; 
+    box-shadow: 0 0 15px rgba(0, 220, 220, 0.2) !important; 
+    margin: 0 !important;
+    z-index: 5 !important;
+}
+
+/* 2. TEXT INFO (Strict Width to prevent overlap) */
+[data-theme="gaming"] .media-info { 
+    position: absolute !important;
+    top: 50% !important; 
+    transform: translateY(-50%) !important;
+    left: 95px !important;
+    width: 155px !important; /* Locks text so it NEVER touches buttons */
+    display: flex !important; 
+    flex-direction: column !important; 
+    gap: 2px !important;
+    margin: 0 !important;
+    z-index: 5 !important;
+}
+
+[data-theme="gaming"] .media-title { 
+    color: var(--accent-red) !important; 
+    font-size: 1.05rem !important; 
+    font-weight: 800 !important; 
+    letter-spacing: 1px !important; 
+    text-transform: uppercase !important; 
+    text-shadow: 0 0 8px rgba(255, 51, 102, 0.4) !important;
+    white-space: nowrap !important; 
+    overflow: hidden !important; 
+    text-overflow: ellipsis !important; 
+}
+
+[data-theme="gaming"] .media-artist { 
+    color: #fff !important; 
+    font-size: 0.7rem !important; 
+    font-weight: 600 !important; 
+    letter-spacing: 1px !important; 
+    text-transform: uppercase !important; 
+    opacity: 0.7 !important;
+    white-space: nowrap !important; 
+    overflow: hidden !important; 
+    text-overflow: ellipsis !important; 
+}
+
+/* 3. TACTICAL CONTROLS WELL (Centered Right) */
+[data-theme="gaming"] .media-controls { 
+    position: absolute !important;
+    top: 50% !important; 
+    transform: translateY(-50%) !important;
+    right: 15px !important;
+    display: flex !important; 
+    align-items: center !important; 
+    gap: 4px !important;
+    background: rgba(0, 0, 0, 0.5) !important; 
+    padding: 6px !important;
+    border-radius: 8px !important;
+    border: 1px solid rgba(0, 220, 220, 0.15) !important;
+    margin: 0 !important;
+    z-index: 5 !important;
+}
+
+[data-theme="gaming"] .m-btn { 
+    color: var(--accent-cyan) !important; 
+    background: transparent !important; 
+    border: 1px solid transparent !important; 
+    border-radius: 4px !important; 
+    width: 28px !important; 
+    height: 28px !important; 
+    padding: 0 !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    transition: all 0.2s ease !important;
+}
+
+[data-theme="gaming"] .m-btn:hover { 
+    background: rgba(0, 220, 220, 0.1) !important; 
+    border-color: var(--accent-cyan) !important; 
+    box-shadow: 0 0 8px rgba(0, 220, 220, 0.3) !important; 
+}
+
+/* Main Play Button */
+[data-theme="gaming"] .play-btn { 
+    background: var(--accent-cyan) !important; 
+    color: #000 !important; 
+    box-shadow: 0 0 10px rgba(0, 220, 220, 0.4) !important; 
+    width: 36px !important; 
+    height: 36px !important; 
+    border-radius: 6px !important;
+}
+[data-theme="gaming"] .play-btn:hover { 
+    background: #fff !important; 
+    box-shadow: 0 0 15px rgba(255, 255, 255, 0.6) !important; 
+}
+
+/* Active/Hover states for UI buttons */
+[data-theme="gaming"] .history-toggle:hover { color: #fff !important; }
+[data-theme="gaming"] .minimize-toggle:hover { color: var(--accent-red) !important; border-color: var(--accent-red) !important; }
+
+/* ------------------------------------------------------------------------- */
+/* MEDIA HISTORY DROPDOWN PANEL (FIXED STATES & ANIMATIONS)                  */
+/* ------------------------------------------------------------------------- */
+
+/* 1. Closed State (Default) */
+[data-theme="gaming"] .media-history-panel {
+    position: absolute !important;
+    top: 110px !important; 
+    bottom: auto !important; 
+    left: 0 !important;
+    width: 460px !important;
+    background: rgba(12, 18, 25, 0.95) !important;
+    backdrop-filter: blur(20px) !important;
+    border-radius: 8px !important;
+    
+    /* Hidden properties */
+    height: 0 !important;
+    opacity: 0 !important;
+    padding: 0 1.5rem !important;
+    border: 2px solid transparent !important;
+    box-shadow: none !important;
+    pointer-events: none !important;
+    overflow: hidden !important;
+    transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1) !important;
+    z-index: 40 !important;
+}
+
+/* 2. Open State (Triggered when you click the button) */
+[data-theme="gaming"] .media-controller.history-open .media-history-panel {
+    height: 320px !important;
+    opacity: 1 !important;
+    padding: 1.5rem !important;
+    border-color: #1c525c !important; /* Cyan border appears */
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.8), 0 0 20px rgba(0, 220, 220, 0.1) !important;
+    pointer-events: auto !important;
+}
+
+/* Header and Track Items */
+[data-theme="gaming"] .history-header {
+    color: var(--accent-cyan) !important;
+    border-bottom: 1px solid rgba(0, 220, 220, 0.3) !important;
+    font-family: 'Outfit', sans-serif !important; 
+    font-weight: 800 !important; 
+    letter-spacing: 2px !important;
+    padding-bottom: 10px !important;
+    margin-bottom: 15px !important;
+}
+
+[data-theme="gaming"] .history-item {
+    background: rgba(0, 220, 220, 0.02) !important;
+    border: 1px solid transparent !important;
+    border-radius: 4px !important;
+    margin-bottom: 0.4rem !important;
+    padding: 12px !important;
+    transition: all 0.2s ease !important;
+    cursor: pointer !important;
+}
+
+[data-theme="gaming"] .history-item:hover {
+    background: rgba(0, 220, 220, 0.1) !important; 
+    border-color: var(--accent-cyan) !important;
+    transform: translateX(5px) !important; 
+    box-shadow: -4px 0 0 var(--accent-red) !important; /* Red hover accent */
+}
+
+[data-theme="gaming"] .h-item-title { 
+    color: #fff !important; 
+    font-weight: 700 !important; 
+    font-size: 0.95rem !important; 
+}
+
+[data-theme="gaming"] .h-item-artist { 
+    color: var(--accent-cyan) !important; 
+    font-weight: 500 !important; 
+    letter-spacing: 1px !important; 
+    font-size: 0.75rem !important; 
+    margin-top: 4px !important;
+}
+
+/* ------------------------------------------------------------------------- */
+/* MINIMIZED STATE (Floating Cyber Badge)                                    */
+/* ------------------------------------------------------------------------- */
+[data-theme="gaming"] .media-controller.minimized {
+    position: absolute !important;
+    top: 30px !important; 
+    left: 4vw !important;
+    width: 76px !important; 
+    height: 76px !important; 
+    border-radius: 12px !important; 
+    background: rgba(12, 18, 25, 0.85) !important;
+    border: 2px solid var(--accent-cyan) !important;
+    box-shadow: 0 0 20px rgba(0, 220, 220, 0.3) !important;
+    padding: 0 !important;
+    display: flex !important; 
+    justify-content: center !important; 
+    align-items: center !important;
+    z-index: 50 !important;
+}
+
+[data-theme="gaming"] .media-controller.minimized .media-art {
+    top: auto !important; left: auto !important; transform: none !important;
+    position: relative !important;
+    width: 64px !important; height: 64px !important;
+    border-radius: 8px !important; border: none !important; box-shadow: none !important;
+}
+
+/* Restore Button */
+[data-theme="gaming"] .media-controller.minimized .minimize-toggle {
+    position: absolute !important; 
+    top: -8px !important; 
+    right: -8px !important;
+    width: 24px !important; 
+    height: 24px !important;
+    background: var(--accent-red) !important; 
+    color: #000 !important;
+    border-radius: 50% !important; 
+    border: none !important;
+    box-shadow: 0 0 10px var(--accent-red) !important;
+    display: flex !important; 
+    align-items: center !important; 
+    justify-content: center !important;
+}
+[data-theme="gaming"] .media-controller.minimized .minimize-toggle:hover { background: #fff !important; }
+[data-theme="gaming"] .media-controller.minimized .media-history-panel { top: 85px !important; left: 0 !important; }
+
+/* ------------------------------------------------------------------------- */
+/* 6. SYSTEM STATUS CLOCK (FORCE OVERRIDE JS STATES)                         */
+/* ------------------------------------------------------------------------- */
+[data-theme="gaming"] .clock-widget,
+[data-theme="gaming"] .clock-widget.pos-left,
+[data-theme="gaming"] .clock-widget.pos-right {
+    position: absolute !important;
+    top: 30px !important;
+    right: 4vw !important;
+    left: auto !important;
+    transform: none !important;
+    width: 360px !important;
+    height: 230px !important; 
+    padding: 0 !important;
+    background: rgba(12, 18, 25, 0.85) !important;
+    border: 2px solid #1c525c !important; 
+    border-radius: 12px !important;
+    clip-path: polygon(0 15px, 15px 0, 100% 0, 100% calc(100% - 15px), calc(100% - 15px) 100%, 0 100%) !important;
+    box-shadow: 0 15px 35px rgba(0,0,0,0.6) !important;
+    transition: none !important; 
+}
+
+/* KILLS JS INJECTED FACES - Prevents reload overlap */
+[data-theme="gaming"] .clock-digits,
+[data-theme="gaming"] .clock-widget.style-digital .clock-digits,
+[data-theme="gaming"] .clock-analog-face,
+[data-theme="gaming"] .clock-widget.style-analog .clock-analog-face,
+[data-theme="gaming"] .header-secondary {
+    display: none !important; 
+}
+
+/* ALWAYS SHOW TEXT CLOCK regardless of JS state */
+[data-theme="gaming"] .clock-minimal-text,
+[data-theme="gaming"] .clock-widget.style-digital .clock-minimal-text,
+[data-theme="gaming"] .clock-widget.style-analog .clock-minimal-text {
+    display: block !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    position: absolute !important;
+    top: 45px !important; 
+    left: 20px !important;
+    font-size: 4.8rem !important;
+    font-weight: 600 !important;
+    font-family: 'Outfit', sans-serif !important;
+    letter-spacing: 1px !important;
+    margin: 0 !important;
+    
+    /* THE FIX 1: Lock digit widths so the string NEVER shrinks or grows! */
+    font-variant-numeric: tabular-nums !important;
+    
+    /* THE FIX 2: Anchor the red color exactly 2.5 characters from the right side */
+    background: linear-gradient(to left, var(--accent-red) 2ch, var(--accent-cyan) 2.5ch) !important;
+    -webkit-background-clip: text !important;
+    background-clip: text !important;
+    -webkit-text-fill-color: transparent !important;
+    text-shadow: none !important;
+    z-index: 5;
+}
+
+[data-theme="gaming"] .clock-widget::before {
+    content: 'SYSTEM STATUS';
+    position: absolute;
+    top: 0;
+    left: 0;
+    background: rgba(0, 220, 220, 0.1) !important;
+    border-bottom: 2px solid var(--accent-cyan) !important;
+    border-right: 2px solid var(--accent-cyan) !important;
+    color: var(--accent-cyan);
+    font-size: 0.8rem;
+    font-weight: 700;
+    letter-spacing: 1px;
+    padding: 8px 25px 8px 15px;
+    clip-path: polygon(0 0, 100% 0, calc(100% - 15px) 100%, 0 100%);
+    z-index: 10;
+    height: 23px;
+    box-shadow: none !important; /* Overrides universal card top-bar */
+    border-radius: 0 !important;
+    width: auto !important;
+}
+
+[data-theme="gaming"] .clock-widget::after {
+    content: '';
+    position: absolute;
+    top: 15px;
+    right: 40px;
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background: var(--accent-red) !important;
+    box-shadow: 10px 0 0 var(--accent-red), 20px 0 0 var(--accent-red) !important;
+    z-index: 10;
+}
+
+[data-theme="gaming"] .clock-widget .ampm {
+    display: block !important;
+    visibility: visible !important;
+    position: absolute !important;
+    top: 80px !important;
+    right: 25px !important;
+    color: rgba(255, 255, 255, 0.7) !important;
+    font-size: 1.4rem !important;
+    font-weight: 600 !important;
+    z-index: 5;
+}
+
+[data-theme="gaming"] .clock-header {
+    position: absolute !important;
+    top: 135px !important; 
+    left: 20px !important;
+    width: calc(100% - 40px) !important;
+    border: none !important;
+    background: transparent !important;
+    display: block !important; 
+    padding: 0 !important;
+    opacity: 1 !important; 
+    pointer-events: auto !important;
+    z-index: 5;
+}
+
+[data-theme="gaming"] .header-date {
+    display: block !important;
+    color: var(--accent-red) !important;
+    font-size: 1.6rem !important;
+    font-weight: 600 !important;
+    letter-spacing: 1px !important;
+    text-transform: uppercase !important;
+    opacity: 1 !important;
+    padding-bottom: 12px !important;
+    border-bottom: 1px solid rgba(0, 220, 220, 0.3) !important; 
+}
+
+/* 7. The Live Footer Diagnostics (REAL DATA) */
+[data-theme="gaming"] .clock-diagnostics {
+    display: flex !important;
+    position: absolute !important;
+    top: 50px !important; /* Locks safely below the date */
+    left: 0 !important;
+    width: 100% !important;
+    z-index: 10 !important;
+}
+
+[data-theme="gaming"] .diag-ping,
+[data-theme="gaming"] .diag-data {
+    color: var(--accent-cyan);
+    font-size: 0.8rem;
+    line-height: 1.4;
+    font-weight: 500;
+    opacity: 0.8;
+}
+
+[data-theme="gaming"] .diag-ping {
+    width: 50%;
+}
+
+[data-theme="gaming"] .diag-data {
+    width: 50%;
+    padding-left: 20px;
+    border-left: 1px solid rgba(0, 220, 220, 0.3);
+}
+
+/* Make the live numbers pop by targeting the inline spans we created in JS */
+[data-theme="gaming"] .clock-diagnostics span {
+    color: #fff !important;
+    font-weight: 700 !important;
+    text-shadow: 0 0 5px rgba(255, 255, 255, 0.5);
+    font-family: 'Outfit', monospace !important;
+}
+
+
+
+/* ------------------------------------------------------------------------- */
+/* MEDIA HISTORY DROPDOWN VISIBILITY FIX                                     */
+/* ------------------------------------------------------------------------- */
+
+/* 1. Force the player to allow elements to render outside of it */
+[data-theme="gaming"] .media-controller:not(.minimized) {
+    overflow: visible !important; 
+}
+
+/* 2. Remove the "cookie-cutter" mask ONLY when the history panel is open */
+[data-theme="gaming"] .media-controller.history-open {
+    clip-path: none !important; 
+    /* The bottom-left corner reverts to standard rounded glass */
+    border-bottom-left-radius: 12px !important; 
+}
+
+/* Ensure the history panel itself is layered above the other widgets */
+[data-theme="gaming"] .media-history-panel {
+    z-index: 100 !important;
+}
+
+/* ------------------------------------------------------------------------- */
+/* WIDGET INTERIOR SCROLLING (Prevents content from breaking the box)        */
+/* ------------------------------------------------------------------------- */
+
+/* 1. Make the main body of every widget scrollable */
+[data-theme="gaming"] .widget-card__body {
+    height: calc(100% - 50px) !important; /* Accounts for the header height */
+    overflow-y: auto !important;
+    overflow-x: hidden !important;
+    padding: 1rem 1.5rem !important; 
+}
+
+/* 2. Specifically target the Quest Tracker list */
+[data-theme="gaming"] .widget-todo__list {
+    max-height: 160px !important; /* Limits the list height before scrolling kicks in */
+    overflow-y: auto !important;
+    overflow-x: hidden !important;
+    padding-right: 8px !important; /* Prevents text from hitting the scrollbar */
+    margin-top: 10px !important;
+}
+
+/* 3. Apply the glowing Cyber-HUD scrollbar to the widget interiors */
+[data-theme="gaming"] .widget-card__body::-webkit-scrollbar,
+[data-theme="gaming"] .widget-todo__list::-webkit-scrollbar,
+[data-theme="gaming"] .widget-notes__textarea::-webkit-scrollbar {
+    width: 4px !important;
+}
+
+[data-theme="gaming"] .widget-card__body::-webkit-scrollbar-track,
+[data-theme="gaming"] .widget-todo__list::-webkit-scrollbar-track,
+[data-theme="gaming"] .widget-notes__textarea::-webkit-scrollbar-track {
+    background: rgba(0, 220, 220, 0.05) !important; /* Very faint cyan track */
+    border-radius: 4px !important;
+}
+
+[data-theme="gaming"] .widget-card__body::-webkit-scrollbar-thumb,
+[data-theme="gaming"] .widget-todo__list::-webkit-scrollbar-thumb,
+[data-theme="gaming"] .widget-notes__textarea::-webkit-scrollbar-thumb {
+    background: var(--accent-cyan) !important;
+    border-radius: 4px !important;
+    box-shadow: 0 0 8px var(--accent-cyan) !important; /* Glowing thumb */
+}
+
+/* 4. Fix textarea inside Strategy Log to fill the scrollable space */
+[data-theme="gaming"] .widget-notes__textarea {
+    width: 100% !important;
+    height: 100% !important;
+    resize: none !important; /* Disables manual resizing which breaks the HUD */
+    overflow-y: auto !important;
+    padding-right: 8px !important;
+}
+
+
+/* ------------------------------------------------------------------------- */
+/* 10. CYBER-SEARCH TERMINAL (Double-Click Target)                           */
+/* ------------------------------------------------------------------------- */
+
+/* Overrides JS positioning and locks it perfectly top-center */
+[data-theme="gaming"] .search-widget,
+[data-theme="gaming"] .search-widget.pos-left,
+[data-theme="gaming"] .search-widget.pos-right {
+    display: flex !important; 
+    position: absolute !important;
+    bottom: auto !important;
+    top: 30px !important; /* Perfectly aligns horizontally with Clock and Player */
+    left: 50% !important;
+    transform: translateX(-50%) !important;
+    width: 500px !important;
+    height: auto !important;
+    background: rgba(12, 18, 25, 0.85) !important;
+    backdrop-filter: blur(16px) saturate(120%) !important;
+    border: 2px solid #1c525c !important;
+    border-radius: 12px !important;
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5), inset 0 0 20px rgba(0, 220, 220, 0.08) !important;
+    padding: 0 !important;
+    z-index: 100 !important;
+    overflow: visible !important;
+    
+    /* Symmetrical Chamfered Corners */
+    clip-path: polygon(15px 0, calc(100% - 15px) 0, 100% 15px, 100% 100%, 0 100%, 0 15px) !important;
+    transition: box-shadow 0.3s ease !important;
+}
+
+/* Red Hardware Accent Bar (Top Center) */
+[data-theme="gaming"] .search-widget::before {
+    content: ''; 
+    position: absolute; 
+    top: 0; left: 50%; 
+    transform: translateX(-50%);
+    width: 100px; height: 3px; 
+    background: var(--accent-red) !important;
+    box-shadow: 0 0 10px var(--accent-red) !important; 
+    border-radius: 0 0 4px 4px; 
+    z-index: 10;
+}
+
+[data-theme="gaming"] .search-widget:hover {
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.8), inset 0 0 30px rgba(0, 220, 220, 0.15) !important;
+}
+
+/* Input Text & Blinking Cursor Polish */
+[data-theme="gaming"] .search-widget input {
+    background: transparent !important;
+    border: none !important;
+    color: var(--accent-cyan) !important;
+    font-family: 'Outfit', monospace !important;
+    font-size: 1.1rem !important;
+    font-weight: 600 !important;
+    letter-spacing: 1px !important;
+    width: 100% !important;
+    padding: 16px 25px !important;
+    outline: none !important;
+    
+    /* THE MAGIC TOUCH: Turns the typing cursor Alert Red */
+    caret-color: var(--accent-red) !important; 
+}
+
+/* Ghosted Placeholder Text */
+[data-theme="gaming"] .search-widget input::placeholder {
+    color: rgba(0, 220, 220, 0.4) !important;
+    text-transform: uppercase !important;
+    letter-spacing: 2px !important;
+}
+
+/* Any search icons inside the bar */
+[data-theme="gaming"] .search-widget svg,
+[data-theme="gaming"] .search-widget i {
+    color: var(--accent-cyan) !important;
+    opacity: 0.7 !important;
+    margin: 0 15px !important;
+}
+
+/* ------------------------------------------------------------------------- */
+/* 11. CYBER-SEARCH AUTOCOMPLETE (Bulletproof Visibility Fix)                */
+/* ------------------------------------------------------------------------- */
+
+/* 1. Force the inner wrapper to stop creating a "double box" effect */
+[data-theme="gaming"] .search-input-wrapper {
+    background: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+    width: 100% !important;
+}
+
+/* 2. The Dropdown Container */
+[data-theme="gaming"] .search-autocomplete {
+    position: absolute !important;
+    top: 100% !important; 
+    bottom: auto !important;
+    left: -2px !important; 
+    width: calc(100% + 4px) !important; 
+    background: rgba(12, 18, 25, 0.95) !important;
+    backdrop-filter: blur(20px) !important;
+    border: 2px solid var(--accent-cyan) !important;
+    border-top: 1px solid rgba(0, 220, 220, 0.3) !important; 
+    border-radius: 0 0 12px 12px !important;
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.8), 0 10px 20px rgba(0, 220, 220, 0.1) !important;
+    max-height: 350px !important;
+    overflow-y: auto !important;
+    z-index: 9999 !important; /* Force it above everything else */
+    
+    /* Hidden by default */
+    display: none !important; 
+    opacity: 0 !important;
+    transform: none !important;
+}
+
+/* 3. ONLY SHOW WHEN ACTIVE */
+[data-theme="gaming"] .search-autocomplete.active {
+    display: flex !important; /* Must be flex so the list items stack properly */
+    flex-direction: column !important;
+    opacity: 1 !important;
+    animation: cyberSlideDown 0.2s ease forwards !important;
+}
+
+/* 4. Disables the bottom chamfer on the main bar when dropdown is open */
+[data-theme="gaming"] .search-widget:has(.search-autocomplete.active) {
+    border-bottom-left-radius: 0 !important;
+    border-bottom-right-radius: 0 !important;
+    clip-path: none !important;
+}
+
+/* 5. Suggestion Items Fix (Forces visibility and correct sizing) */
+[data-theme="gaming"] .suggestion-item {
+    padding: 14px 25px !important;
+    color: #fff !important; /* Forces the text to be visible white */
+    font-family: 'Outfit', sans-serif !important;
+    font-size: 0.95rem !important;
+    cursor: pointer !important;
+    border-bottom: 1px solid rgba(0, 220, 220, 0.1) !important;
+    transition: all 0.2s ease !important;
+    display: flex !important;
+    align-items: center !important;
+    width: 100% !important; 
+    box-sizing: border-box !important;
+    background: transparent !important;
+}
+
+/* The Hover State */
+[data-theme="gaming"] .suggestion-item:hover,
+[data-theme="gaming"] .suggestion-item.selected {
+    background: rgba(0, 220, 220, 0.15) !important;
+    padding-left: 32px !important; 
+    box-shadow: -4px 0 0 var(--accent-red) inset !important; 
+    color: var(--accent-cyan) !important;
+}
+
+/* 6. Fix icons and text inside the items */
+[data-theme="gaming"] .suggestion-item .item-icon {
+    color: var(--accent-cyan) !important;
+    margin-right: 15px !important;
+    display: flex !important;
+}
+
+[data-theme="gaming"] .suggestion-item .item-text {
+    flex: 1 !important;
+    text-align: left !important;
+}
+
+@keyframes cyberSlideDown {
+    from { opacity: 0; transform: translateY(-10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+/* --- GAMING: TACTICAL LIGHT BOOT --- */
+
+/* Add a scanning light streak to the glass panels */
+[data-theme="gaming"].booting .widget-card::after {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(0, 255, 255, 0.2), transparent);
+    animation: lightStreak 1.2s ease-in-out forwards;
+    z-index: 20;
+}
+
+[data-theme="gaming"].booting .clock-widget { animation-delay: 0.1s; }
+[data-theme="gaming"].booting .media-controller { animation-delay: 0.2s; }
+[data-theme="gaming"].booting .widget-card { animation-delay: 0.3s; }
+
+/* The Red Alert line glows intensely then settles */
+[data-theme="gaming"].booting .widget-card::before,
+[data-theme="gaming"].booting .media-controller::before {
+    animation: glowPulse 1.5s ease-out 0.5s;
+    background: #fff !important; /* Start white-hot */
+    transition: background 1s ease 1s;
+}
+
+[data-theme="gaming"]:not(.booting) .widget-card::before {
+    background: var(--accent-red) !important;
+}
+/* --- CLEAN GAMING HUD INITIALIZATION --- */
+
+@keyframes hudScan {
+    0% { 
+        opacity: 0; 
+        clip-path: inset(0 50% 0 50%); /* Start from a vertical line in the center */
+        filter: brightness(2);
+    }
+    100% { 
+        opacity: 1; 
+        clip-path: inset(0 0 0 0); /* Expand outwards */
+        filter: brightness(1);
+    }
+}
+
+/* Apply the scan only to visible gaming components */
+[data-theme="gaming"].booting .clock-widget,
+[data-theme="gaming"].booting .media-controller,
+[data-theme="gaming"].booting .widget-card,
+[data-theme="gaming"].booting .top-sites-widget {
+    animation: hudScan 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards !important;
+}
+
+/* Stagger them so they "click" into place one by one */
+[data-theme="gaming"].booting .clock-widget { animation-delay: 0.1s !important; }
+[data-theme="gaming"].booting .media-controller { animation-delay: 0.2s !important; }
+[data-theme="gaming"].booting .widget-area { animation-delay: 0.3s !important; }
+
+/* Remove the ugly flicker from the search bar during boot */
+[data-theme="gaming"].booting .search-widget.hidden {
+    display: none !important;
+    animation: none !important;
+}

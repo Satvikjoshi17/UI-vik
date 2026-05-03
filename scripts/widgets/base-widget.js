@@ -83,7 +83,9 @@ export class BaseWidget {
      */
     createCard(title) {
         const card = document.createElement('div');
-        card.className = 'widget-card';
+    
+    // CHANGE THIS LINE to add the unique widget ID as a class:
+    card.className = `widget-card widget-${this.constructor.metadata.id}`;
 
         const header = document.createElement('div');
         header.className = 'widget-card__header';

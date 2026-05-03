@@ -1,0 +1,416 @@
+/* Professional theme CSS */
+
+/* Professional theme CSS extracted from components.css, settings.css, and widgets.css */
+
+/* Professional Elegant Entrance */
+[data-theme="professional"].booting .media-controller { animation-delay: 0.1s; }
+[data-theme="professional"].booting .clock-widget { animation-delay: 0.2s; }
+[data-theme="professional"].booting .top-sites-widget { animation-delay: 0.3s; }
+[data-theme="professional"].booting .widget-card { 
+    animation: slideAndBlur 1s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+/* Staggered widget entrance from center */
+[data-theme="professional"].booting .widget-card:nth-child(1) { animation-delay: 0.4s; }
+[data-theme="professional"].booting .widget-card:nth-child(2) { animation-delay: 0.5s; }
+[data-theme="professional"].booting .widget-card:nth-child(3) { animation-delay: 0.6s; }
+
+[data-theme="professional"] .clock-widget,
+[data-theme="professional"] .top-sites-widget {
+    background: rgba(15, 17, 26, 0.98) !important;
+    border-radius: 24px !important;
+    border: 1px solid rgba(255, 255, 255, 0.08) !important;
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5) !important;
+    backdrop-filter: none !important;
+    /* THE FIX: Completely kill the glassmorphism blur */
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+}
+/* Hide Gaming Network Stats from Professional Theme */
+[data-theme="professional"] .clock-diagnostics {
+    display: none !important;
+}
+
+[data-theme="professional"] .search-widget {
+    bottom: calc(3rem + 320px + 1.5rem) !important;
+    max-width: 600px !important;
+}
+[data-theme="professional"] .search-input-wrapper {
+    background: rgba(0, 0, 0, 0.4) !important;
+    border-radius: 12px !important;
+    border: 1px solid rgba(255, 255, 255, 0.1) !important;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3) !important;
+}
+[data-theme="professional"] .search-input {
+    font-size: 1rem !important;
+    padding: 1rem 1rem 1rem 3.5rem !important;
+}
+[data-theme="professional"] .search-icon-inline {
+    left: 18px !important;
+}
+[data-theme="professional"] .top-sites-widget {
+    background: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+    padding: 0 !important;
+    transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1) !important;
+    z-index: 5;
+}
+[data-theme="professional"] .top-sites-widget.pos-right {
+    top: 5vh !important;
+    left: 4vw !important;
+    right: auto !important;
+    bottom: auto !important;
+}
+[data-theme="professional"] .top-sites-widget.pos-left {
+    top: 5vh !important;
+    right: 4vw !important;
+    left: auto !important;
+    bottom: auto !important;
+}
+body.settings-open [data-theme="professional"] .top-sites-widget.pos-right {
+    left: 400px !important;
+}
+body.settings-open [data-theme="professional"] .top-sites-widget.pos-left {
+    right: 400px !important;
+}
+[data-theme="professional"] .top-site-icon {
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 12px;
+    width: 44px;
+    height: 44px;
+}
+[data-theme="professional"] .top-site-label {
+    font-size: 0.7rem;
+    opacity: 0.6;
+}
+[data-theme="professional"] .clock-widget {
+    background: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+    padding: 0 !important;
+    transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1) !important;
+    z-index: 5;
+}
+[data-theme="professional"] .clock-widget.pos-right {
+    top: 5vh !important;
+    right: 4vw !important;
+    left: auto !important;
+}
+[data-theme="professional"] .widget-area {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: flex-end;
+    gap: 1rem;
+    position: fixed;
+    bottom: 3rem;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 90vw;
+    height: auto;
+    top: auto;
+    padding: 0;
+    overflow: visible;
+}
+/* Lock all Pro widgets to the exact same size */
+[data-theme="professional"] .widget-card {
+    width: 320px !important;
+    height: 320px !important;
+    min-width: 320px !important;
+    max-width: 320px !important;
+    display: flex !important;
+    flex-direction: column !important;
+    background: rgba(15, 15, 20, 0.8) !important;
+    border: 1px solid rgba(255, 255, 255, 0.1) !important;
+    border-radius: 20px !important;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3) !important;
+    transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1) !important;
+}
+
+[data-theme="professional"] .widget-card:hover {
+    transform: translateY(-15px) scale(1.02);
+    background: rgba(25, 25, 35, 0.9) !important;
+    border-color: var(--accent-color) !important;
+}
+
+[data-theme="professional"] .widget-card__header {
+    padding: 0.75rem 1.2rem;
+    background: rgba(255, 255, 255, 0.03);
+    flex-shrink: 0 !important; /* Prevents header from shrinking */
+}
+
+/* Make the body fill the rest of the card and enable scrolling */
+[data-theme="professional"] .widget-card__body {
+    flex: 1 !important;
+    /* max-height: none !important; Overrides the old 200px limit */
+    height: auto !important;
+    overflow-y: auto !important;
+    overflow-x: hidden !important;
+    padding: 1rem 1.2rem !important;
+}
+[data-theme="professional"] .widget-card__title {
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    opacity: 0.8;
+}
+:root, [data-theme="dark"], [data-theme="light"], [data-theme="professional"] {
+    --accent-color: #4361ee;
+    --accent-gradient: linear-gradient(135deg, #4361ee, #4cc9f0);
+    --glass-bg: rgba(10, 10, 18, 0.98);
+    --glass-border: rgba(255, 255, 255, 0.12);
+    --text-primary: #ffffff;
+    --text-secondary: rgba(255, 255, 255, 0.5);
+    --card-radius: 32px;
+    --panel-blur: 0px;
+}
+
+/* ------------------------------------------------------------------------- */
+/* PRO THEME INTERIOR SCROLLING & WIDGET FIXES                               */
+/* ------------------------------------------------------------------------- */
+
+/* Apply minimalist scrollbars to Pro Theme widgets */
+[data-theme="professional"] .widget-card__body::-webkit-scrollbar,
+[data-theme="professional"] .widget-todo__list::-webkit-scrollbar,
+[data-theme="professional"] .widget-notes__textarea::-webkit-scrollbar {
+    width: 4px !important;
+}
+
+[data-theme="professional"] .widget-card__body::-webkit-scrollbar-track,
+[data-theme="professional"] .widget-todo__list::-webkit-scrollbar-track,
+[data-theme="professional"] .widget-notes__textarea::-webkit-scrollbar-track {
+    background: transparent !important; 
+}
+
+/* Subtle, sleek scrollbar thumb */
+[data-theme="professional"] .widget-card__body::-webkit-scrollbar-thumb,
+[data-theme="professional"] .widget-todo__list::-webkit-scrollbar-thumb,
+[data-theme="professional"] .widget-notes__textarea::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.15) !important;
+    border-radius: 4px !important;
+    transition: background 0.2s ease !important;
+}
+
+/* Lights up with accent color when hovered */
+[data-theme="professional"] .widget-card__body::-webkit-scrollbar-thumb:hover,
+[data-theme="professional"] .widget-todo__list::-webkit-scrollbar-thumb:hover,
+[data-theme="professional"] .widget-notes__textarea::-webkit-scrollbar-thumb:hover {
+    background: var(--accent-color) !important;
+}
+
+/* Fix Notes Textarea to perfectly fill its new uniform box */
+[data-theme="professional"] .widget-notes__textarea {
+    width: 100% !important;
+    height: 100% !important;
+    resize: none !important; /* Disables manual dragging */
+    padding-right: 8px !important;
+}
+
+/* Fix Todo List to scroll cleanly within the fixed card */
+[data-theme="professional"] .widget-todo__list {
+    max-height: 220px !important;
+    overflow-y: auto !important;
+    padding-right: 8px !important;
+}
+
+
+/* ========================================================================= */
+/* PRO THEME: EXECUTIVE MEDIA PLAYER                                         */
+/* ========================================================================= */
+
+/* 1. Base Container (Sleek Horizontal Pill) */
+[data-theme="professional"] .media-controller:not(.minimized) {
+    background: rgba(15, 17, 26, 0.98) !important; /* Solid, no blur */
+    border: 1px solid rgba(255, 255, 255, 0.08) !important;
+    border-radius: 24px !important; 
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5) !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+    padding: 12px 20px !important;
+    width: 440px !important;
+    height: 72px !important; /* Slimmer profile */
+    display: flex !important;
+    align-items: center !important;
+    gap: 16px !important;
+    top: 2vh !important;
+    bottom: auto !important;
+    left: 50% !important;
+    transform: translateX(-50%) !important;
+    transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1) !important;
+}
+
+/* Shifting logic when Settings panel is open */
+body.settings-open [data-theme="professional"] .media-controller:not(.minimized) {
+    transform: translateX(calc(-50% - 180px)) !important;
+}
+
+/* 2. Album Art (Crisp Rounded Square) */
+[data-theme="professional"] .media-art {
+    width: 48px !important;
+    height: 48px !important;
+    border-radius: 12px !important;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3) !important;
+    border: 1px solid rgba(255, 255, 255, 0.05) !important;
+    margin: 0 !important;
+    flex-shrink: 0 !important;
+}
+
+/* 3. Text Information (Minimalist Typography) */
+[data-theme="professional"] .media-info {
+    flex-grow: 1 !important;
+    display: flex !important;
+    flex-direction: column !important;
+    justify-content: center !important;
+    gap: 2px !important;
+    overflow: hidden !important;
+}
+
+[data-theme="professional"] .media-title {
+    font-size: 0.95rem !important;
+    font-weight: 600 !important;
+    color: #ffffff !important;
+    letter-spacing: 0.2px !important;
+    white-space: nowrap !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+}
+
+[data-theme="professional"] .media-artist {
+    font-size: 0.75rem !important;
+    font-weight: 400 !important;
+    color: rgba(255, 255, 255, 0.5) !important;
+    white-space: nowrap !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+}
+
+/* 4. Controls Group */
+[data-theme="professional"] .media-controls {
+    display: flex !important;
+    align-items: center !important;
+    gap: 8px !important;
+    background: transparent !important;
+    border: none !important;
+    padding: 0 !important;
+}
+
+/* Auxiliary Buttons (Hover to highlight) */
+[data-theme="professional"] .m-btn {
+    background: transparent !important;
+    border: none !important;
+    color: rgba(255, 255, 255, 0.5) !important;
+    width: 32px !important;
+    height: 32px !important;
+    border-radius: 8px !important;
+    transition: all 0.2s ease !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+}
+
+[data-theme="professional"] .m-btn:hover {
+    color: #ffffff !important;
+    background: rgba(255, 255, 255, 0.08) !important;
+}
+
+/* High-Contrast Primary Play Button */
+[data-theme="professional"] .play-btn {
+    background: #ffffff !important;
+    color: #000000 !important;
+    border-radius: 50% !important;
+    width: 40px !important;
+    height: 40px !important;
+    box-shadow: 0 4px 15px rgba(255, 255, 255, 0.15) !important;
+}
+
+[data-theme="professional"] .play-btn:hover {
+    transform: scale(1.05) !important;
+    background: #f0f0f0 !important;
+    box-shadow: 0 6px 20px rgba(255, 255, 255, 0.25) !important;
+}
+
+/* 5. Floating History Panel */
+[data-theme="professional"] .media-history-panel {
+    background: rgba(15, 17, 26, 0.98) !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+    border: 1px solid rgba(255, 255, 255, 0.08) !important;
+    border-radius: 20px !important;
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6) !important;
+    top: 85px !important; /* Drops down smoothly from the top player */
+    bottom: auto !important;
+    left: 50% !important;
+    transform: translateX(-50%) !important;
+    width: 400px !important;
+    padding: 1.5rem !important;
+}
+
+/* Pro History Internals */
+[data-theme="professional"] .history-header {
+    color: rgba(255, 255, 255, 0.4) !important;
+    font-size: 0.75rem !important;
+    font-weight: 600 !important;
+    letter-spacing: 1px !important;
+    text-transform: uppercase !important;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05) !important;
+    padding-bottom: 10px !important;
+    margin-bottom: 15px !important;
+}
+
+[data-theme="professional"] .history-item {
+    background: transparent !important;
+    border: 1px solid transparent !important;
+    border-radius: 10px !important;
+    padding: 10px 12px !important;
+    transition: all 0.2s ease !important;
+}
+
+[data-theme="professional"] .history-item:hover {
+    background: rgba(255, 255, 255, 0.04) !important;
+    border-color: rgba(255, 255, 255, 0.08) !important;
+    transform: none !important; /* No sliding, purely professional */
+}
+
+[data-theme="professional"] .h-item-title {
+    color: #ffffff !important;
+    font-weight: 500 !important;
+    font-size: 0.9rem !important;
+}
+
+[data-theme="professional"] .h-item-artist {
+    color: rgba(255, 255, 255, 0.5) !important;
+    font-weight: 400 !important;
+    font-size: 0.75rem !important;
+}
+/* --- PROFESSIONAL: STUDIO LIGHT BOOT --- */
+
+[data-theme="professional"].booting .clock-widget,
+[data-theme="professional"].booting .top-sites-widget,
+[data-theme="professional"].booting .media-controller,
+[data-theme="professional"].booting .widget-card {
+    /* Uses a softer, slower expansion */
+    animation: lightAperture 1.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+/* Staggered entrance for the bottom dock */
+[data-theme="professional"].booting .widget-card:nth-child(1) { animation-delay: 0.2s; }
+[data-theme="professional"].booting .widget-card:nth-child(2) { animation-delay: 0.3s; }
+[data-theme="professional"].booting .widget-card:nth-child(3) { animation-delay: 0.4s; }
+
+/* The active clock digits fade in from a blue-white glow */
+[data-theme="professional"].booting .clock-minimal-text {
+    animation: cyberFlicker 0.5s ease-in-out 0.2s forwards;
+    filter: drop-shadow(0 0 10px #fff);
+}
+@keyframes proFade {
+    0% { opacity: 0; filter: blur(5px); }
+    100% { opacity: 1; filter: blur(0); }
+}
+
+[data-theme="professional"].booting .clock-widget,
+[data-theme="professional"].booting .top-sites-widget,
+[data-theme="professional"].booting .media-controller,
+[data-theme="professional"].booting .widget-card {
+    animation: proFade 1s ease-out forwards !important;
+}
