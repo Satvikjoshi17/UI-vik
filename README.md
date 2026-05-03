@@ -6,7 +6,7 @@ A high-performance, visually immersive New Tab dashboard for Chrome, engineered 
 
 ## 🎨 Choose Your Interface
 
-### 🕹️ Gaming (Spider-Man HUD)
+### 🕹️ Gaming (HUD)
 A high-intensity, tactical HUD designed for gamers.
 *   **Aesthetic:** Chamfered glass edges, glowing cyan borders, and "Alert Red" hardware accents.[cite: 1]
 *   **System Status:** Live network diagnostics (Ping & Download speed) integrated into the clock.
