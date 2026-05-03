@@ -108,13 +108,22 @@ export class MediaController {
     }
 
     sendCommand(command) {
-        if (typeof chrome !== 'undefined' && chrome.runtime && chrome.runtime.sendMessage) {
-            chrome.runtime.sendMessage({
-                type: 'MEDIA_COMMAND',
-                data: { command, tabId: this.currentTabId }
-            }).catch(() => {});
-        }
+    // Optimistic UI: Update icon instantly if toggling
+    if (command === 'toggle') {
+        this.isPlaying = !this.isPlaying;
+        const playSvg = this.container.querySelector('#play-svg');
+        playSvg.innerHTML = this.isPlaying 
+            ? '<path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/>' 
+            : '<path d="M8 5v14l11-7z"/>';
     }
+
+    if (typeof chrome !== 'undefined' && chrome.runtime?.sendMessage) {
+        chrome.runtime.sendMessage({
+            type: 'MEDIA_COMMAND',
+            data: { command, tabId: this.currentTabId }
+        }).catch(() => {});
+    }
+}
 
     updateUI(data) {
         this.currentTabId = data.tabId;
@@ -144,26 +153,29 @@ export class MediaController {
             artPlaceholder.style.display = 'block';
         }
 
-        if (data.history) {
-            const listEl = this.container.querySelector('#history-list');
-            listEl.innerHTML = data.history.map(item => `
-                <div class="history-item" data-url="${item.url}">
-                    <div class="h-item-title">${item.title}</div>
-                    <div class="h-item-artist">${item.artist}</div>
-                </div>
-            `).join('');
+        // Inside updateUI(data) where history is mapped
+if (data.history) {
+    const listEl = this.container.querySelector('#history-list');
+    listEl.innerHTML = data.history.map(item => `
+        <div class="history-item" data-url="${item.url}">
+            <div class="h-item-title">${item.title}</div>
+            <div class="h-item-artist">${item.artist}</div>
+        </div>
+    `).join('');
 
-            listEl.querySelectorAll('.history-item').forEach(item => {
-                item.onclick = (e) => {
-                    e.stopPropagation();
-                    chrome.runtime.sendMessage({
-                        type: 'MEDIA_COMMAND',
-                        data: { command: 'toggle', tabId: null, url: item.dataset.url }
-                    });
-                    this.container.classList.remove('history-open');
-                };
+    // RE-BIND CLICKS: Ensure this runs AFTER innerHTML is set
+    listEl.querySelectorAll('.history-item').forEach(item => {
+        item.onclick = (e) => {
+            e.stopPropagation();
+            const songUrl = item.getAttribute('data-url');
+            chrome.runtime.sendMessage({
+                type: 'MEDIA_COMMAND',
+                data: { command: 'play', tabId: null, url: songUrl }
             });
-        }
+            this.container.classList.remove('history-open');
+        };
+    });
+}
 
         if (data.title === 'Not Playing') {
             this.container.classList.add('hidden');

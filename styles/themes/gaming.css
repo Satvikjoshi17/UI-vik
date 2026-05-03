@@ -769,6 +769,7 @@
 [data-theme="gaming"] .search-widget,
 [data-theme="gaming"] .search-widget.pos-left,
 [data-theme="gaming"] .search-widget.pos-right {
+    margin: 10px;
     display: flex !important; 
     position: absolute !important;
     bottom: auto !important;
