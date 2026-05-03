@@ -42,9 +42,9 @@ async function findTargetTab() {
 
     // 3. Search for any open media tabs
     const allTabs = await chrome.tabs.query({});
-    const mediaTab = allTabs.find(t => 
-        t.url.includes('youtube.com/watch') || 
-        t.url.includes('spotify.com') || 
+    const mediaTab = allTabs.find(t =>
+        t.url.includes('youtube.com/watch') ||
+        t.url.includes('spotify.com') ||
         t.url.includes('music.youtube.com')
     );
     return mediaTab || null;
@@ -52,18 +52,19 @@ async function findTargetTab() {
 
 async function broadcastMediaState() {
     const targetTab = await findTargetTab();
+    if (!targetTab || targetTab.status === 'loading') return;
 
     if (!targetTab) {
         if (lastMediaData) {
-            chrome.runtime.sendMessage({ 
-                type: 'MEDIA_UPDATE', 
-                data: { ...lastMediaData, isPlaying: false, tabId: null, history: mediaHistory } 
-            }).catch(() => {});
+            chrome.runtime.sendMessage({
+                type: 'MEDIA_UPDATE',
+                data: { ...lastMediaData, isPlaying: false, tabId: null, history: mediaHistory }
+            }).catch(() => { });
         } else {
-            chrome.runtime.sendMessage({ 
-                type: 'MEDIA_UPDATE', 
-                data: { isPlaying: false, title: 'Not Playing', artist: 'Select a tab with music', history: mediaHistory } 
-            }).catch(() => {});
+            chrome.runtime.sendMessage({
+                type: 'MEDIA_UPDATE',
+                data: { isPlaying: false, title: 'Not Playing', artist: 'Select a tab with music', history: mediaHistory }
+            }).catch(() => { });
         }
         return;
     }
@@ -87,14 +88,14 @@ async function broadcastMediaState() {
                         url: window.location.href
                     };
                 }
-                const ytTitle = document.querySelector('h1.ytd-video-primary-info-renderer')?.innerText || 
-                                document.querySelector('yt-formatted-string.ytd-video-primary-info-renderer')?.innerText ||
-                                document.title;
-                const ytArtist = document.querySelector('ytd-channel-name a')?.innerText || 
-                                 document.querySelector('#upload-info #channel-name')?.innerText || 'Web Media';
-                return { 
-                    title: ytTitle.replace(' - YouTube', ''), 
-                    artist: ytArtist, 
+                const ytTitle = document.querySelector('h1.ytd-video-primary-info-renderer')?.innerText ||
+                    document.querySelector('yt-formatted-string.ytd-video-primary-info-renderer')?.innerText ||
+                    document.title;
+                const ytArtist = document.querySelector('ytd-channel-name a')?.innerText ||
+                    document.querySelector('#upload-info #channel-name')?.innerText || 'Web Media';
+                return {
+                    title: ytTitle.replace(' - YouTube', ''),
+                    artist: ytArtist,
                     artwork: null,
                     isPlaying: isPlaying,
                     url: window.location.href
@@ -104,16 +105,22 @@ async function broadcastMediaState() {
 
         if (results && results[0]?.result) {
             const data = results[0].result;
-            
-            // Update History if it's a new song
-            if (data.title && (!lastMediaData || lastMediaData.title !== data.title)) {
-                mediaHistory = [data, ...mediaHistory.filter(item => item.title !== data.title)].slice(0, 10);
-                chrome.storage.local.set({ mediaHistory });
+
+            // THE FIX: Only add to history if the song is actually playing 
+            // and the title is different from the very last entry.
+            const isNewTrack = !lastMediaData || lastMediaData.title !== data.title;
+
+            if (data.title && data.isPlaying && isNewTrack) {
+                // Double check against the first item in history to prevent duplicates
+                if (mediaHistory.length === 0 || mediaHistory[0].title !== data.title) {
+                    mediaHistory = [data, ...mediaHistory.filter(item => item.title !== data.title)].slice(0, 10);
+                    chrome.storage.local.set({ mediaHistory });
+                }
             }
 
             lastMediaData = data;
             chrome.storage.local.set({ lastMediaData: data });
-            
+
             chrome.runtime.sendMessage({
                 type: 'MEDIA_UPDATE',
                 data: {
@@ -125,9 +132,11 @@ async function broadcastMediaState() {
                     url: data.url,
                     history: mediaHistory
                 }
-            }).catch(() => {});
+            }).catch(() => { });
         }
     } catch (err) {
+        if (err.message.includes('Frame with ID 0 was removed')) {
+            return;}
         console.error('Metadata extraction failed:', err);
     }
 }
@@ -138,7 +147,7 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
         broadcastMediaState();
     } else if (message.type === 'MEDIA_COMMAND') {
         const { command, tabId } = message.data;
-        
+
         if (tabId) {
             // Tab exists, just send command
             chrome.scripting.executeScript({
